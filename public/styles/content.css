@@ -1,0 +1,913 @@
+/* === СТИЛЬ РЕЗУЛЬТАТОВ (image_1.png) === */
+.results-wrapper {
+    background: #f3f6fb;
+    width: 100%;
+    padding: 40px 40px 56px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.changelog-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.changelog-card {
+    margin-bottom: 0;
+}
+
+.changelog-intro {
+    margin: 0 0 22px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.changelog-entry {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--card-bg);
+    padding: 20px 22px;
+}
+
+.changelog-entry-header {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.changelog-entry h4 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.changelog-entry h5 {
+    margin: 20px 0 10px;
+    font-size: 16px;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.changelog-entry p {
+    margin: 0;
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.changelog-entry ul {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 8px;
+}
+
+.changelog-entry li {
+    color: var(--text-primary);
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.contact-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.contact-card {
+    margin-bottom: 0;
+}
+
+.contact-intro {
+    margin: 0 0 18px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.contact-list {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.contact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.contact-row:last-child {
+    border-bottom: none;
+}
+
+.contact-label {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.contact-value-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 0;
+}
+
+.contact-value {
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    text-align: right;
+}
+
+a.contact-value:hover {
+    color: var(--accent-red);
+}
+
+.contact-copy-btn {
+    padding: 6px 10px;
+    border-radius: 7px;
+    border: 1px solid var(--border-color);
+    background: #eef2f7;
+    color: #526079;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.contact-copy-btn:hover {
+    background: #ffffff;
+    color: var(--accent-red);
+}
+
+.contact-copy-btn.copied {
+    background: rgba(255, 107, 107, 0.15);
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+.faq-container {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.faq-card {
+    margin-bottom: 0;
+}
+
+.faq-intro {
+    margin: 0 0 18px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.faq-list {
+    display: grid;
+    gap: 12px;
+}
+
+.faq-item {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--card-bg);
+    padding: 14px 16px;
+}
+
+.faq-question,
+.faq-answer {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.faq-question {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.faq-pill {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: rgba(255, 107, 107, 0.16);
+    color: var(--accent-red);
+    font-size: 12px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.faq-pill-answer {
+    background: #eef2f7;
+    color: #526079;
+}
+
+.faq-item h4 {
+    margin: 2px 0 0;
+    font-size: 16px;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.faq-item p {
+    margin: 1px 0 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.policy-container {
+    max-width: 1020px;
+    margin: 0 auto;
+}
+
+.policy-card {
+    margin-bottom: 0;
+}
+
+.policy-meta {
+    margin: 0 0 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.policy-section {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--card-bg);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+}
+
+.policy-section:last-child {
+    margin-bottom: 0;
+}
+
+.policy-section h4 {
+    margin: 0 0 8px;
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.policy-section p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.policy-link {
+    color: var(--accent-red);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 700;
+}
+
+.policy-link:hover {
+    color: #f05252;
+}
+
+.policy-section ul {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 6px;
+}
+
+.policy-section li {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.site-footer {
+    width: 100%;
+    background: #121d34;
+    color: #c6d2e7;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: auto;
+}
+
+.site-footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 22px 20px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    gap: 26px;
+    box-sizing: border-box;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.footer-brand .brand-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.footer-col h4 {
+    margin: 0 0 10px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.footer-col a,
+.footer-col p {
+    display: block;
+    color: #c6d2e7;
+    text-decoration: none;
+    margin: 0 0 6px;
+    line-height: 1.35;
+    font-size: 14px;
+}
+
+.footer-col a:hover {
+    color: #ffffff;
+}
+
+.site-footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 22px 12px;
+    border-top: 1px solid rgba(198, 210, 231, 0.22);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.site-footer-bottom p {
+    margin: 0;
+    color: #9bb0cf;
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.main-container {
+    display: grid;
+    grid-template-columns: minmax(420px, 1.8fr) minmax(0, 3.2fr);
+    gap: 30px;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 20px 0 0;
+}
+
+.guild-page-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 20px 0 0;
+    box-sizing: border-box;
+}
+
+.guild-hero-card {
+    padding: 24px 36px;
+    margin-bottom: 24px;
+}
+
+.guild-hero-title {
+    margin: 0;
+    text-align: center;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.guild-hero-subtitle {
+    margin: 12px 0 0;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.guild-content-grid {
+    display: grid;
+    grid-template-columns: minmax(320px, 1fr) minmax(0, 2.1fr);
+    gap: 24px;
+}
+
+.guild-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.guild-overview-card,
+.guild-level-card,
+.guild-members-card {
+    margin-bottom: 0;
+}
+
+.guild-members-card {
+    padding: 24px;
+}
+
+.guild-members-table-wrap {
+    margin-top: 0;
+}
+
+.guild-members-table th:first-child,
+.guild-members-table td:first-child {
+    width: 72px;
+    text-align: center;
+}
+
+.guild-members-table th:nth-child(2),
+.guild-members-table td:nth-child(2) {
+    text-align: left;
+    min-width: 180px;
+}
+
+.guild-members-table td {
+    vertical-align: middle;
+}
+
+.guild-members-table thead th {
+    font-size: 11px;
+}
+
+.guild-members-table tbody td {
+    font-size: 14px;
+}
+
+.guild-member-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    display: inline-block;
+}
+
+.guild-member-name {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.guild-member-name-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.guild-member-rank-prefix {
+    font-weight: 700;
+    letter-spacing: 0.1px;
+}
+
+.guild-member-username {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.guild-member-username-muted {
+    color: #8f98a8;
+}
+
+.sidebar-column {
+    min-width: 0;
+}
+
+.player-overview,
+.guild-card,
+.guild-overview,
+.social-card {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* КАРТОЧКИ */
+.card {
+    background-color: var(--card-bg);
+    padding: 36px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    margin-bottom: 36px;
+}
+
+/* ЛЕВАЯ КОЛОНКА */
+.player-overview #playerName,
+.guild-overview #guildStatsName {
+    font-size: 28px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stats-list p {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    color: #1f2937;
+}
+
+.stats-list p strong {
+    color: #667085;
+    font-weight: 600;
+}
+
+.stats-list p span:not(.status-online):not(.status-offline):not(.guild-name) {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.stats-list p span.guild-name {
+    color: var(--accent-red);
+    font-weight: 700;
+}
+    .guild-name-link {
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+.status-offline { color: #f05252; font-weight: bold; }
+.status-online { color: #2dce89; font-weight: bold; }
+.guild-name { color: var(--accent-red); font-weight: bold; }
+
+.back-button {
+    width: 100%;
+    background-color: var(--text-secondary);
+}
+.back-button:hover { background-color: #4a515a; }
+
+/* ПРАВАЯ КОЛОНКА: ИГРЫ */
+.games-card {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+/* ОБЩИЕ СТИЛИ АККОРДЕОНОВ */
+.game-item {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden; /* Важно для закругления */
+}
+
+.game-header {
+    background-color: #eef2f7;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 18px 25px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.game-header:hover { background-color: #e2eaf2; color: var(--accent-red); }
+.game-header .arrow { transition: 0.3s; color: var(--text-secondary); }
+
+.game-header.active {
+    background-color: var(--accent-red);
+    color: white;
+}
+
+.game-header.active .arrow { 
+    transform: rotate(180deg); 
+    color: white; 
+}
+
+.game-header.active span,
+.game-header.active span i {
+    color: white;
+}
+
+/* ПАНЕЛЬ СТАТИСТИКИ (раскрывающаяся) */
+.game-panel {
+    background-color: #fafbfc;
+    max-height: 0;
+    overflow-y: auto;
+    transition: max-height 0.3s ease-out;
+    padding: 0 25px;
+}
+.game-panel.active { padding: 15px 25px 25px; }
+
+/* ОБЩИЕ ХАРАКТЕРИСТИКИ (список над таблицей) */
+/* ПОЛНАЯ СТАТИСТИКА (Вертикальный список над таблицей) */
+.overall-stats-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+.overall-stats-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-bottom: 1px solid #edf1f7;
+    font-size: 13px;
+    color: var(--text-primary); /* Цвет цифр (справа) */
+}
+.overall-stats-row:last-child {
+    border-bottom: 2px solid var(--border-color); /* Отделяем от таблицы жирной линией */
+}
+.overall-stats-row strong {
+    color: var(--text-secondary); /* Цвет текста (слева) */
+    font-weight: 600;
+}
+
+/* Murder Mystery Секции */
+.overall-stats-section {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+}
+.section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1f2937;
+    padding: 12px 15px 8px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* СТИЛЬ ДЛЯ ТАБЛИЦ */
+.stats-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    margin-top: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #c9d2df transparent;
+}
+
+.stats-table-wrapper::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.stats-table-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.stats-table-wrapper::-webkit-scrollbar-thumb {
+    background: #c9d2df;
+    border-radius: 999px;
+}
+
+.stats-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #b8c3d3;
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    color: var(--text-secondary);
+    table-layout: auto;
+}
+
+.stats-table th, .stats-table td {
+    padding: 12px 15px;
+    text-align: right;
+}
+
+.stats-table th:first-child, .stats-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+    white-space: normal;
+}
+
+.stats-table th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-color);
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 70px;
+    padding: 8px 6px;
+}
+
+.stats-table tbody tr:not(:last-child) {
+    border-bottom: 1px solid #edf1f7;
+}
+
+.stats-table tbody tr:hover {
+    background-color: #f1f4f8;
+}
+
+.stats-table .highlight {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.blitz-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.blitz-table th,
+.blitz-table td {
+    padding: 8px 10px;
+}
+
+.blitz-table th {
+    max-width: none;
+    white-space: nowrap;
+    word-break: normal;
+}
+
+.blitz-table th:first-child,
+.blitz-table td:first-child {
+    width: 72%;
+}
+
+.blitz-table th:last-child,
+.blitz-table td:last-child {
+    width: 28%;
+    padding-right: 8px;
+}
+    .guild-member-link {
+        color: inherit;
+        text-decoration: none;
+    }
+    .guild-member-link:hover .guild-member-username,
+    .guild-member-link:hover .guild-member-username-muted {
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+/* === ЦВЕТА РАНГОВ HYPIXEL === */
+.rank-tag {
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-right: 8px;
+}
+/* === ЦВЕТА РАНГОВ HYPIXEL ДЛЯ НИКНЕЙМОВ === */
+/* Эти стили применятся к имени и рангу (MVP+, VIP+ и т.д.) */
+.rank-admin { color: #AA0000; } /* Тёмно-красный */
+.rank-mod { color: #00AA00; } /* Тёмно-зеленый */
+.rank-helper { color: #00AAAA; } /* Светло-голубой */
+.rank-youtube { color: #AA0000; } /* Тёмно-красный */
+
+.rank-mvp-plus-plus { color: #55FFFF; } /* Светло-голубой */
+.rank-mvp-plus { color: #31C7C7; } /* Светло-голубой (Как на скрине Техноблейда) */
+.rank-mvp { color: #31C7C7; } /* Светло-голубой */
+.rank-vip-plus { color: #55FF55; } /* Светло-зеленый */
+.rank-vip { color: #55FF55; } /* Светло-зеленый */
+
+/* === ШАПКА ИГРОКА (Аватар + Ник) === */
+.player-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.player-header h2 {
+    margin-bottom: 0;
+    font-size: 26px; /* Сделали ник чуть крупнее */
+}
+
+/* КРУГЛАЯ АВАТАРКА */
+.player-avatar {
+    width: 68px;
+    height: 64px;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0;
+}
+
+/* Делаем разделители в списке стат более заметными */
+.overall-stats-row span:empty::before {
+    content: "";
+}
+
+.general-stats-list {
+    margin-bottom: 8px;
+}
+
+.general-stats-pet-item {
+    margin: 0 25px 12px;
+}
+
+.general-stats-pet-table-wrap {
+    margin-top: 0;
+    max-height: none;
+    overflow: visible;
+}
+
+.pet-stats-table {
+    table-layout: fixed;
+}
+
+.pet-stats-table th:first-child,
+.pet-stats-table td:first-child {
+    text-align: left;
+}
+
+.pet-stats-table th:last-child,
+.pet-stats-table td:last-child {
+    text-align: right;
+    width: 120px;
+}
+
+.pet-stats-table .pet-table-empty {
+    text-align: left;
+}
+
+/* SOCIAL MEDIA CARD */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.social-icons a {
+    font-size: 32px;
+    transition: transform 0.2s;
+}
+
+.social-icons a:hover {
+    transform: scale(1.1);
+}
+
+/* Фирменные цвета соцсетей */
+.social-youtube { color: #FF0000; }
+.social-twitter { color: #1DA1F2; }
+.social-discord { color: #5865F2; }
+.social-twitch { color: #9146FF; }
+.social-instagram { color: #E1306C; }
+
+/* === ФИКС НИКОВ (БЕЗ ОБРЕЗАНИЯ) === */
+#playerName {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 5px; /* Чуть уменьшили отступ между ником и гильдией */
+    row-gap: 2px;
+    font-size: 20px; /* Немного уменьшили базовый шрифт, чтобы влезало 100% */
+    line-height: 1.2;
+    margin: 0;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+.player-rank-name {
+    font-weight: 700;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.player-guild-tag {
+    color: #AAAAAA;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1;
+    margin-left: -2px;
+    white-space: nowrap;
+    flex-shrink: 0; /* Запрещаем тегу гильдии сжиматься */
+}

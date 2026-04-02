@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypixel Статистика</title>
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem('clev3r-theme');
+                var safeTheme = theme === 'dark' || theme === 'light' ? theme : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', safeTheme);
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="#searchPage" onclick="goBack(); return false;" class="brand brand-link">
+                <div class="brand-icon">C</div>
+                <span class="brand-name">clev3r</span>
+            </a>
+            <nav class="site-nav">
+                <a href="#searchPage" id="navHypixelStats" class="nav-link nav-link-active">Hypixel Stats</a>
+                <a href="#changeLogPage" id="navChangeLog" class="nav-link" onclick="goToChangeLog(); return false;">Change Log</a>
+                <a href="#contactUsPage" id="navContactUs" class="nav-link" onclick="goToContactUs(); return false;">Contact Us</a>
+                <a href="#faqPage" id="navFaq" class="nav-link" onclick="goToFaq(); return false;">FAQ</a>
+                <button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="subnav-wrap">
+        <div class="subnav-inner">
+            <a href="#searchPage" id="subnavPlayerStats" onclick="goToPlayerSearch(); return false;" class="subnav-link subnav-link-active"><i class="fa-solid fa-user"></i> Player Stats</a>
+            <a href="#comparatorPage" id="subnavComparator" onclick="goToComparatorSearch(); return false;" class="subnav-link"><i class="fa-solid fa-right-left"></i> Player Comparator</a>
+            <a href="#guildSearchPage" id="subnavGuildStats" onclick="goToGuildSearch(); return false;" class="subnav-link"><i class="fa-solid fa-users"></i> Guild Stats</a>
+        </div>
+    </section>
+
+    <div id="searchPage" class="search-container">
+        <div class="search-box-card">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <h1>Check Hypixel Stats</h1>
+            <p>Enter a Minecraft username to view detailed Hypixel statistics</p>
+            <div class="input-group">
+                <input type="text" id="usernameInput" placeholder="Enter username" onkeypress="if(event.key === 'Enter') getStats()">
+                <button onclick="getStats()">Search</button>
+            </div>
+            <div id="recentSearches" class="recent-searches hidden">
+                <div class="recent-searches-title">Recent Searches</div>
+                <div id="recentSearchesList" class="recent-searches-list"></div>
+            </div>
+            <div id="error" class="error hidden"></div>
+        </div>
+    </div>
+
+    <div id="resultsPage" class="results-wrapper hidden">
+        <div class="main-container">
+            <div class="sidebar-column">
+                <div class="card player-overview">
+                    <h3><i class="fa-solid fa-user"></i> Player Overview</h3>
+                    <div class="player-header">
+                        <img id="playerAvatar" src="" alt="Avatar" class="player-avatar hidden">
+                        <h2 id="playerName">Имя игрока</h2>
+                    </div>
+                    <div class="stats-list">
+                        <p><strong>Network Level:</strong> <span id="playerLevel">0</span></p>
+                        <p><strong>Karma:</strong> <span id="playerKarma">0</span></p>
+                        <p><strong>Achievement Points:</strong> <span id="playerAchPoints">0</span></p>
+                        <p><strong>Quests Completed:</strong> <span id="playerQuests">0</span></p>
+                        
+                        <p><strong>Total Current Coins:</strong> <span id="playerTotalCoins">0</span></p>
+                        
+                        <p><strong>Total Kills:</strong> <span id="playerKills">0</span></p>
+                        <p><strong>Total Wins:</strong> <span id="playerWins">0</span></p>
+                        <p><strong>First Login:</strong> <span id="playerFirstLogin">-</span></p>
+                        <p><strong>Latest Login:</strong> <span id="playerLatestLogin">-</span></p>
+                        <p><strong>Online Status:</strong> <span id="playerStatus" class="status-offline">Offline</span></p>
+                    </div>
+                </div>
+
+                <div id="guildCard" class="card guild-card">
+                    <h3><i class="fa-solid fa-users"></i> Guild</h3>
+                    <div id="guildInfo" class="stats-list">
+                        <p><strong>Name:</strong> <span id="guildName" class="guild-name">-</span></p>
+                        <p><strong>Members:</strong> <span id="guildMembers">0</span></p>
+                        <p><strong>Rank:</strong> <span id="guildRank">-</span></p>
+                    </div>
+                    <p id="noGuildText" class="hidden">Not in a guild.</p>
+                </div>
+
+                <div id="socialCard" class="card social-card hidden">
+                    <h3><i class="fa-solid fa-share-nodes"></i> Social Media</h3>
+                    <div class="social-icons" id="socialIconsContainer">
+                        </div>
+                </div>
+                
+                <button class="back-button" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i> Go back</button>
+            </div>
+
+            <div class="games-column">
+                <div class="games-card">
+                    <h3><i class="fa-solid fa-gamepad"></i> Player Game Stats</h3>
+                    <div id="gamesAccordion" class="games-accordion">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="guildStatsPage" class="results-wrapper hidden">
+        <div class="guild-page-container">
+            <div class="card guild-hero-card">
+                <h2 id="guildStatsName" class="guild-hero-title">Guild Name</h2>
+                <p id="guildResolvedBy" class="guild-hero-subtitle">Search result</p>
+            </div>
+
+            <div class="guild-content-grid">
+                <div class="guild-left-col">
+                    <div class="card guild-overview-card">
+                        <h3><i class="fa-solid fa-circle-info"></i> Guild Info</h3>
+                        <div class="stats-list">
+                            <p><strong>Tag:</strong> <span id="guildStatsTag">-</span></p>
+                            <p><strong>Founded:</strong> <span id="guildStatsCreated">-</span></p>
+                            <p><strong>Members:</strong> <span id="guildStatsMembers">0</span></p>
+                            <p><strong>Current Coins:</strong> <span id="guildStatsCoins">0</span></p>
+                            <p><strong>Total Coins (EXP):</strong> <span id="guildStatsExp">0</span></p>
+                            <p><strong>Publicly Joinable:</strong> <span id="guildStatsJoinable">-</span></p>
+                            <p><strong>Legacy Ranking:</strong> <span id="guildStatsLegacy">-</span></p>
+                            <p><strong>Description:</strong> <span id="guildStatsDesc">No description</span></p>
+                        </div>
+                    </div>
+
+                    <div class="card guild-level-card">
+                        <h3><i class="fa-solid fa-arrow-trend-up"></i> Guild Level</h3>
+                        <div class="stats-list">
+                            <p><strong>Level:</strong> <span id="guildStatsLevel">0</span></p>
+                            <p><strong>Leaders:</strong> <span id="guildLeadersCount">0</span></p>
+                            <p><strong>Officers:</strong> <span id="guildOfficersCount">0</span></p>
+                            <p><strong>Members:</strong> <span id="guildMembersCount">0</span></p>
+                        </div>
+                    </div>
+
+                    <div class="card guild-wins-card">
+                        <h3><i class="fa-solid fa-trophy"></i> Guild Wins</h3>
+                        <div class="stats-list">
+                            <p><strong>Total Wins:</strong> <span id="guildWinsTotal">0</span></p>
+                            <p><strong>Position:</strong> <span id="guildWinsPosition">Over 20,000</span></p>
+                        </div>
+                    </div>
+
+                    <button class="back-button" onclick="goToGuildSearch()"><i class="fa-solid fa-arrow-left"></i> Go back</button>
+                </div>
+
+                <div class="card guild-members-card">
+                    <h3><i class="fa-solid fa-users"></i> Guild Members</h3>
+                    <div class="stats-table-wrapper guild-members-table-wrap">
+                        <table class="stats-table guild-members-table">
+                            <thead>
+                                <tr>
+                                    <th>Face</th>
+                                    <th>Name</th>
+                                    <th>Rank</th>
+                                    <th>Joined</th>
+                                    <th>Last Login</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guildMembersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="guildSearchPage" class="search-container hidden">
+        <div class="search-box-card">
+            <i class="fa-solid fa-users search-icon"></i>
+            <h1>Check Guild Stats</h1>
+            <p>Search for a guild by player name or guild name</p>
+            <div class="input-group">
+                <input type="text" id="guildInput" placeholder="Enter player name or guild name" onkeypress="if(event.key === 'Enter') getGuildStats()">
+                <button onclick="getGuildStats()">Search</button>
+            </div>
+            <div id="guildError" class="error hidden"></div>
+        </div>
+    </div>
+
+    <div id="comparatorPage" class="search-container hidden">
+        <div class="search-box-card comparator-box-card">
+            <h1>Player Comparator</h1>
+            <p>Enter two player names to compare their stats</p>
+            <div class="comparator-inputs">
+                <input type="text" id="compareFirstInput" placeholder="Enter first player name" onkeypress="if(event.key === 'Enter') comparePlayers()">
+                <input type="text" id="compareSecondInput" placeholder="Enter second player name" onkeypress="if(event.key === 'Enter') comparePlayers()">
+                <button onclick="comparePlayers()">Compare Players</button>
+            </div>
+            <div id="comparatorError" class="error hidden"></div>
+        </div>
+    </div>
+
+    <div id="comparatorResultsPage" class="results-wrapper hidden">
+        <div class="comparator-results-container">
+            <div class="card comparator-results-card">
+                <h3><i class="fa-solid fa-right-left"></i> Comparison Results</h3>
+
+                <div id="comparatorResult" class="comparator-result hidden">
+                    <div class="comparator-result-grid">
+                        <div class="comparator-player-card">
+                            <h3 id="cmpPlayerAName">Player A</h3>
+                            <div class="stats-list">
+                                <p><strong>Network Level:</strong> <span id="cmpPlayerALevel">0</span></p>
+                                <p><strong>Karma:</strong> <span id="cmpPlayerAKarma">0</span></p>
+                                <p><strong>Achievement Points:</strong> <span id="cmpPlayerAAch">0</span></p>
+                                <p><strong>Quests Completed:</strong> <span id="cmpPlayerAQuests">0</span></p>
+                                <p><strong>Total Wins:</strong> <span id="cmpPlayerAWins">0</span></p>
+                                <p><strong>Total Kills:</strong> <span id="cmpPlayerAKills">0</span></p>
+                            </div>
+                        </div>
+
+                        <div class="comparator-player-card">
+                            <h3 id="cmpPlayerBName">Player B</h3>
+                            <div class="stats-list">
+                                <p><strong>Network Level:</strong> <span id="cmpPlayerBLevel">0</span></p>
+                                <p><strong>Karma:</strong> <span id="cmpPlayerBKarma">0</span></p>
+                                <p><strong>Achievement Points:</strong> <span id="cmpPlayerBAch">0</span></p>
+                                <p><strong>Quests Completed:</strong> <span id="cmpPlayerBQuests">0</span></p>
+                                <p><strong>Total Wins:</strong> <span id="cmpPlayerBWins">0</span></p>
+                                <p><strong>Total Kills:</strong> <span id="cmpPlayerBKills">0</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="comparatorModes" class="comparator-modes"></div>
+                </div>
+            </div>
+
+            <button class="back-button comparator-back-btn" onclick="goToComparatorSearch()"><i class="fa-solid fa-arrow-left"></i> Back to Comparator</button>
+        </div>
+    </div>
+
+    <div id="changeLogPage" class="results-wrapper hidden">
+        <div class="changelog-container">
+            <div class="card changelog-card">
+                <h3><i class="fa-solid fa-clock-rotate-left"></i> Change Log</h3>
+                <p class="changelog-intro">This page tracks every update made to the site: what changed, why it matters, and when it was released.</p>
+
+                <article class="changelog-entry">
+                    <div class="changelog-entry-header">
+                        <h4>April 2, 2026 — Major Stats Update</h4>
+                    </div>
+
+                    <p>Today, two major features were added: a full <strong>Guild Stats</strong> experience and a new <strong>Player Comparator</strong> section. Below is a detailed breakdown of what was implemented.</p>
+
+                    <h5>Guild Stats</h5>
+                    <ul>
+                        <li>Added a dedicated guild search flow that supports both player-name lookup and direct guild-name lookup, leading to a standalone guild results page.</li>
+                        <li>Built a detailed guild overview card showing tag, creation date, member count, current coins, total EXP, joinability status, and description.</li>
+                        <li>Implemented a guild level and structure panel with role breakdown (leaders, officers, members) for quick guild health visibility.</li>
+                        <li>Added a full members table with avatar, guild rank, join date, and last login; player names are clickable and open that player’s stats directly.</li>
+                        <li>Improved data accuracy for guild level calculation, wins display source, rank formatting and prefix colors, plus correct rank-based member sorting.</li>
+                    </ul>
+
+                    <h5>Player Comparator</h5>
+                    <ul>
+                        <li>Added a dedicated two-player comparison workflow with a separate results page and a clear back-to-search action.</li>
+                        <li>Included core network-level comparisons (level, karma, achievement points, quests, total wins/kills) alongside per-mode game comparisons.</li>
+                        <li>Expanded mode-level metrics for BedWars and SkyWars with key ratios and combat stats (K/D, W/L, Final K/D, beds, finals, and more).</li>
+                        <li>Introduced visual advantage highlighting (better/worse) so stat differences are immediately readable without manual calculation.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <div id="contactUsPage" class="results-wrapper hidden">
+        <div class="contact-container">
+            <div class="card contact-card">
+                <h3><i class="fa-solid fa-envelope"></i> Contact Us</h3>
+                <p class="contact-intro">The website is still fresh, so some bugs may appear. If you find any issues, please message me and describe what happened.</p>
+
+                <div class="contact-list">
+                    <div class="contact-row">
+                        <span class="contact-label">Email</span>
+                        <div class="contact-value-wrap">
+                            <a class="contact-value" href="mailto:maksimmalutin86@gmail.com">maksimmalutin86@gmail.com</a>
+                            <button class="contact-copy-btn" type="button" onclick="copyContact('maksimmalutin86@gmail.com', this)">Copy</button>
+                        </div>
+                    </div>
+                    <div class="contact-row">
+                        <span class="contact-label">Discord</span>
+                        <div class="contact-value-wrap">
+                            <span class="contact-value">clev3r</span>
+                            <button class="contact-copy-btn" type="button" onclick="copyContact('clev3r', this)">Copy</button>
+                        </div>
+                    </div>
+                    <div class="contact-row">
+                        <span class="contact-label">YouTube</span>
+                        <a class="contact-value" href="https://youtube.com/@clev3rmaybe" target="_blank" rel="noopener noreferrer">youtube.com/@clev3rmaybe</a>
+                    </div>
+                    <div class="contact-row">
+                        <span class="contact-label">Twitch</span>
+                        <a class="contact-value" href="https://twitch.tv/maybeclever" target="_blank" rel="noopener noreferrer">twitch.tv/maybeclever</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="faqPage" class="results-wrapper hidden">
+        <div class="faq-container">
+            <div class="card faq-card">
+                <h3><i class="fa-solid fa-circle-question"></i> FAQ</h3>
+                <p class="faq-intro">Frequently asked questions about the site and how to use the main sections.</p>
+
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-pill">Q</span>
+                            <h4>What can I do on this website?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <span class="faq-pill faq-pill-answer">A</span>
+                            <p>You can check player statistics, view detailed guild statistics, compare two players, read project updates in Change Log, and use Contact Us to report bugs.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-pill">Q</span>
+                            <h4>How do I find a guild?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <span class="faq-pill faq-pill-answer">A</span>
+                            <p>Open Guild Stats in the sub-navigation and search by either a player name or a guild name. The results page includes guild info, level, wins, and member list.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-pill">Q</span>
+                            <h4>How does Player Comparator work?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <span class="faq-pill faq-pill-answer">A</span>
+                            <p>Enter two player names in Player Comparator. The tool shows side-by-side totals and per-mode comparisons with visual highlights for stronger values.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-pill">Q</span>
+                            <h4>What if I find a bug or wrong value?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <span class="faq-pill faq-pill-answer">A</span>
+                            <p>The site is still fresh and improvements are ongoing. Please report bugs through Contact Us and include as many details as possible about what happened.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-pill">Q</span>
+                            <h4>Do I need to refresh the page to switch sections?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <span class="faq-pill faq-pill-answer">A</span>
+                            <p>No. Navigation is handled inside the interface, so sections open instantly without full page reloads.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-pill">Q</span>
+                            <h4>How does API Compliance work on this site?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <span class="faq-pill faq-pill-answer">A</span>
+                            <p>This is an unofficial project and is not affiliated with or endorsed by Hypixel. We only request public profile/guild data needed for your search, use short server-side caching to reduce repeated requests, and do not run continuous player session tracking.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacyPolicyPage" class="results-wrapper hidden">
+        <div class="policy-container">
+            <div class="card policy-card">
+                <h3><i class="fa-solid fa-shield-halved"></i> Privacy Policy</h3>
+                <p class="policy-meta"><strong>Last updated:</strong> April 2, 2026</p>
+
+                <section class="policy-section">
+                    <h4>1. Overview</h4>
+                    <p>This Privacy Policy explains what information may be processed when you use this website, why it is processed, and what choices you have. By using the site, you agree to this policy.</p>
+                </section>
+
+                <section class="policy-section">
+                    <h4>2. Data We May Process</h4>
+                    <ul>
+                        <li><strong>Technical data:</strong> IP address, browser type, device type, request timestamps, and basic server logs required to run and protect the service.</li>
+                        <li><strong>Usage data:</strong> pages visited and interactions necessary for troubleshooting and improving user experience.</li>
+                        <li><strong>Local browser data:</strong> theme preference stored in browser storage for essential site functionality.</li>
+                        <li><strong>Search input data:</strong> usernames and guild names entered for stats lookups are processed to fulfill your request.</li>
+                    </ul>
+                </section>
+
+                <section class="policy-section">
+                    <h4>3. How We Use Data</h4>
+                    <ul>
+                        <li>To provide core functionality (player stats, guild stats, comparator, and other site features).</li>
+                        <li>To maintain service stability, security, and abuse prevention.</li>
+                        <li>To debug errors and improve performance and reliability.</li>
+                    </ul>
+                </section>
+
+                <section class="policy-section">
+                    <h4>4. Third-Party Sources and Services</h4>
+                    <p>This site may request data from third-party game-related APIs/services (for example Hypixel or Mojang related services) to display public statistics. Those services are governed by their own privacy policies and terms.</p>
+                </section>
+
+                <section class="policy-section">
+                    <h4>4.1 API Compliance</h4>
+                    <ul>
+                        <li><strong>Unofficial status:</strong> this website is not affiliated with or endorsed by Hypixel.</li>
+                        <li><strong>Data scope:</strong> only data required to fulfill user-initiated stats requests (such as usernames, guild lookups, and related public profile/guild fields) is requested.</li>
+                        <li><strong>Caching:</strong> server-side response caching is used to reduce duplicate API calls and lower API load.</li>
+                        <li><strong>No continuous tracking:</strong> the project does not perform background session tracking or continuous polling of player progression.</li>
+                    </ul>
+                </section>
+
+                <section class="policy-section">
+                    <h4>5. Cookies and Local Storage</h4>
+                    <p>This site does not rely on tracking cookies for advertising. It may use browser storage for essential UX preferences like theme selection.</p>
+                </section>
+
+                <section class="policy-section">
+                    <h4>6. Data Sharing</h4>
+                    <p>Personal data is not sold. Data may only be shared when technically required to operate the service, comply with legal obligations, or protect the website against abuse.</p>
+                </section>
+
+                <section class="policy-section">
+                    <h4>7. Data Retention</h4>
+                    <p>Technical logs are kept only as long as reasonably necessary for security, diagnostics, and service maintenance, then deleted or rotated according to operational needs.</p>
+                </section>
+
+                <section class="policy-section">
+                    <h4>8. Your Rights</h4>
+                    <p>Depending on your location, you may have rights related to access, correction, or deletion of certain data. You can contact us and we will review requests in good faith.</p>
+                </section>
+
+                <section class="policy-section">
+                    <h4>9. Children's Privacy</h4>
+                    <p>This website is not intentionally targeted at children under 13, and no knowingly collected personal information from children is intended.</p>
+                </section>
+
+                <section class="policy-section">
+                    <h4>10. Policy Updates</h4>
+                    <p>This Privacy Policy may be updated from time to time. Material changes will be reflected by updating the “Last updated” date on this page.</p>
+                </section>
+
+                <section class="policy-section">
+                    <h4>11. Contact</h4>
+                    <p>If you have privacy-related questions or requests, please use the <a class="policy-link" href="#contactUsPage" onclick="goToContactUs(); return false;">Contact Us</a> page and include enough detail so we can help you quickly.</p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="footer-col footer-brand-col">
+                <div class="footer-brand">
+                    <div class="brand-icon">C</div>
+                    <span>clev3r</span>
+                </div>
+                <p>Enhancing Minecraft gameplay with statistics tools.</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="#searchPage" onclick="goBack(); return false;">Hypixel Stats</a>
+                <a href="#changeLogPage" onclick="goToChangeLog(); return false;">Change Log</a>
+                <a href="#faqPage" onclick="goToFaq(); return false;">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#contactUsPage" onclick="goToContactUs(); return false;">Contact Us</a>
+                <a href="#">Discord Server</a>
+                <a href="#">Bug Reports</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <a href="#privacyPolicyPage" onclick="goToPrivacyPolicy(); return false;">Privacy Policy</a>
+            </div>
+        </div>
+
+        <div class="site-footer-bottom">
+            <p>© <span id="footerYear">2026</span> clev3r. All rights reserved.</p>
+            <p>This is an unofficial project and is not affiliated with or endorsed by Hypixel.</p>
+        </div>
+    </footer>
+
+    <script src="js/core.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/stats-render.js"></script>
+    <script src="js/compare.js"></script>
+    <script src="js/guild.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

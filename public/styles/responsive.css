@@ -1,0 +1,580 @@
+@media (max-width: 1100px) {
+    .main-container {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        zoom: 1;
+    }
+
+    .sidebar-column,
+    .games-column {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .games-column {
+        order: 2;
+    }
+
+    .guild-page-container {
+        padding-right: 0;
+    }
+
+    .guild-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .guild-hero-title {
+        font-size: 38px;
+    }
+
+    .sidebar-column {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .subnav-inner {
+        padding: 8px 14px;
+    }
+
+    .subnav-link {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    .search-container {
+        min-height: auto;
+    }
+
+    .site-footer-inner {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 18px 14px 12px;
+    }
+
+    .footer-col {
+        text-align: center;
+    }
+
+    .footer-brand {
+        justify-content: center;
+    }
+
+    .footer-brand-col p {
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .site-header-inner {
+        padding: 0 14px;
+    }
+
+    .brand-name {
+        font-size: 24px;
+    }
+
+    .nav-link {
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+
+    .comparator-result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .comparator-mode-table {
+        font-size: 12px;
+    }
+
+    .guild-hero-title {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .site-header-inner {
+        height: auto;
+        padding: 8px 10px;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .brand {
+        gap: 8px;
+    }
+
+    .brand-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 15px;
+        border-radius: 8px;
+    }
+
+    .brand-name {
+        font-size: 20px;
+        line-height: 20px;
+        height: 20px;
+    }
+
+    .site-nav {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 6px;
+        flex-wrap: wrap;
+        overflow: visible;
+        padding-bottom: 0;
+    }
+
+    .nav-link {
+        font-size: 12px;
+        padding: 7px 9px;
+        white-space: normal;
+        flex: 0 1 auto;
+    }
+
+    .theme-toggle {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        flex: 0 0 auto;
+    }
+
+    .subnav-inner {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    .subnav-link {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    .search-container {
+        min-height: auto;
+        padding: 14px 10px;
+    }
+
+    .changelog-entry {
+        padding: 16px;
+    }
+
+    .changelog-entry h4 {
+        font-size: 18px;
+    }
+
+    .changelog-entry h5 {
+        font-size: 15px;
+    }
+
+    .changelog-entry li {
+        font-size: 13px;
+    }
+
+    .contact-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .contact-value {
+        text-align: left;
+    }
+
+    .contact-copy-btn {
+        width: auto;
+        min-width: 70px;
+        padding: 7px 12px;
+        font-size: 12px;
+    }
+
+    .faq-item {
+        padding: 14px;
+    }
+
+    .faq-item h4 {
+        font-size: 15px;
+    }
+
+    .faq-item p {
+        font-size: 13px;
+    }
+
+    .policy-section {
+        padding: 12px 14px;
+    }
+
+    .policy-section h4 {
+        font-size: 15px;
+    }
+
+    .policy-section p,
+    .policy-section li {
+        font-size: 13px;
+    }
+
+    .faq-pill {
+        width: 22px;
+        height: 22px;
+        font-size: 11px;
+    }
+
+    .contact-value-wrap {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        justify-content: initial;
+        gap: 8px;
+    }
+
+    .search-box-card {
+        width: 100%;
+        padding: 24px 16px 20px;
+        border-radius: 12px;
+        box-sizing: border-box;
+    }
+
+    .search-icon {
+        font-size: 38px;
+        margin-bottom: 12px;
+    }
+
+    .search-box-card h1 {
+        font-size: 24px;
+    }
+
+    .search-box-card p {
+        font-size: 14px;
+    }
+
+    .recent-search-chip {
+        font-size: 11px;
+        padding: 4px 6px 4px 9px;
+    }
+
+    .recent-search-chip-label {
+        font-size: 11px;
+    }
+
+    .recent-search-chip-remove {
+        width: 17px;
+        min-width: 17px;
+        height: 17px;
+        font-size: 12px;
+    }
+
+    .site-footer-inner {
+        gap: 10px;
+        padding: 14px 12px 10px;
+    }
+
+    .site-footer-bottom {
+        padding: 10px 12px 14px;
+    }
+
+    .site-footer-bottom p {
+        font-size: 13px;
+    }
+
+    .footer-brand {
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .footer-col h4 {
+        margin: 0 0 8px;
+        font-size: 14px;
+    }
+
+    .footer-col a,
+    .footer-col p {
+        font-size: 13px;
+        margin: 0 0 6px;
+    }
+
+    .input-group {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    input,
+    button {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 15px;
+    }
+
+    .results-wrapper {
+        padding: 16px 10px 24px;
+        overflow-x: hidden;
+    }
+
+    .main-container,
+    .guild-page-container {
+        padding: 0;
+        gap: 14px;
+    }
+
+    .guild-page-container,
+    .guild-content-grid,
+    .guild-left-col,
+    .guild-overview-card,
+    .guild-level-card,
+    .guild-wins-card,
+    .guild-members-card {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .guild-content-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        overflow-x: hidden;
+    }
+
+    .guild-left-col {
+        overflow-x: hidden;
+    }
+
+    .card,
+    .games-card,
+    .guild-members-card,
+    .guild-hero-card {
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 14px;
+    }
+
+    .player-header {
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .player-avatar {
+        width: 52px;
+        height: 50px;
+    }
+
+    #playerName,
+    .player-header h2 {
+        font-size: 18px;
+    }
+
+    .stats-list {
+        gap: 8px;
+    }
+
+    .stats-list p {
+        font-size: 14px;
+        gap: 4px;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .stats-list p strong,
+    .stats-list p span {
+        width: 100%;
+    }
+
+    .stats-list p span {
+        text-align: left;
+        word-break: break-word;
+    }
+
+    .guild-hero-card {
+        padding: 14px 14px 12px;
+    }
+
+    .guild-hero-title {
+        font-size: 24px;
+    }
+
+    .guild-hero-subtitle {
+        font-size: 12px;
+        margin-top: 8px;
+    }
+
+    .guild-overview-card,
+    .guild-level-card,
+    .guild-wins-card,
+    .guild-members-card {
+        padding: 14px;
+    }
+
+    .back-button {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 11px 12px;
+        font-size: 14px;
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .guild-members-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .guild-members-table thead th {
+        font-size: 9px;
+    }
+
+    .guild-members-table tbody td {
+        font-size: 11px;
+    }
+
+    .guild-members-table th:first-child,
+    .guild-members-table td:first-child {
+        width: 44px;
+    }
+
+    .guild-members-table th:nth-child(2),
+    .guild-members-table td:nth-child(2) {
+        min-width: 110px;
+        width: 110px;
+    }
+
+    .guild-members-table th:nth-child(3),
+    .guild-members-table td:nth-child(3) {
+        width: 58px;
+    }
+
+    .guild-members-table th:nth-child(4),
+    .guild-members-table td:nth-child(4),
+    .guild-members-table th:nth-child(5),
+    .guild-members-table td:nth-child(5) {
+        width: 88px;
+    }
+
+    .game-header {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .game-panel {
+        padding: 0 8px;
+    }
+
+    .game-panel.active {
+        padding: 10px 8px 14px;
+    }
+
+    .overall-stats-row {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    .stats-table th,
+    .stats-table td {
+        padding: 8px 4px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .stats-table th {
+        font-size: 10px;
+        word-break: normal;
+        max-width: none;
+    }
+
+    .stats-table {
+        min-width: 760px;
+    }
+
+    .guild-members-table th,
+    .guild-members-table td {
+        white-space: nowrap;
+        padding: 6px 4px;
+    }
+
+    .guild-member-name-cell {
+        font-size: 12px;
+    }
+
+    .guild-members-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .comparator-mode-table {
+        min-width: 820px;
+        font-size: 12px;
+    }
+
+    .comparator-overall-table {
+        min-width: 520px;
+    }
+
+    .comparator-player-card {
+        padding: 12px;
+    }
+
+    .comparator-player-card h3 {
+        font-size: 17px;
+        margin-bottom: 8px;
+    }
+
+    .comparator-player-card .stats-list p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 520px) {
+    .site-header-inner {
+        padding: 8px;
+    }
+
+    .site-nav {
+        gap: 5px;
+    }
+
+    .nav-link {
+        font-size: 11px;
+        padding: 6px 8px;
+    }
+
+    .subnav-link {
+        font-size: 11px;
+        padding: 7px 9px;
+        gap: 6px;
+    }
+
+    .search-box-card h1 {
+        font-size: 21px;
+    }
+
+    .search-box-card p {
+        font-size: 13px;
+    }
+
+    .card,
+    .games-card,
+    .guild-members-card,
+    .guild-hero-card {
+        padding: 14px;
+    }
+
+    .comparator-mode-card {
+        padding: 10px;
+    }
+
+    .comparator-mode-title {
+        font-size: 14px;
+    }
+
+    .comparator-section-label {
+        font-size: 11px;
+    }
+}

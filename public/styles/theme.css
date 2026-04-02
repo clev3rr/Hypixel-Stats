@@ -1,0 +1,476 @@
+:root {
+    --bg-color: #f3f6fb;
+    --card-bg: #fcfdff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --accent-red: #ff6b6b;
+    --border-color: #e5eaf1;
+    --shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+:root[data-theme="dark"] {
+    --bg-color: #0f172a;
+    --card-bg: #111827;
+    --text-primary: #e5e7eb;
+    --text-secondary: #94a3b8;
+    --accent-red: #ff6b6b;
+    --border-color: #334155;
+    --shadow: 0 8px 22px rgba(2, 6, 23, 0.45);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+    overflow-y: overlay;
+    overflow-x: hidden;
+}
+
+/* Скрыть scrollbar но оставить функцию */
+::-webkit-scrollbar {
+    width: 0;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.site-header {
+    width: 100%;
+    background: #f9fbff;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.subnav-wrap {
+    width: 100%;
+    background: #f9fbff;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.subnav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px 24px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.subnav-link {
+    text-decoration: none;
+    color: #526079;
+    background: #eef2f7;
+    border: 1px solid #e7edf5;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: color .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+
+.subnav-link:hover {
+    color: var(--accent-red);
+    background: #fff;
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.08);
+}
+
+.subnav-link-active {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+    color: #fff;
+}
+
+.subnav-link-active:hover {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+    color: #fff;
+    box-shadow: none;
+}
+
+.site-header-inner {
+    max-width: 1200px;
+    height: 66px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    width: 33px;
+    height: 33px;
+    border-radius: 10px;
+    background: var(--accent-red);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.brand-name {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    line-height: 28px;
+    display: block;
+    height: 28px;
+    transform: translateY(-1px);
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.brand-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-link:hover .brand-name {
+    border-bottom-color: #000000;
+}
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.theme-toggle {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: #eef2f7;
+    color: #526079;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.theme-toggle:hover {
+    color: var(--accent-red);
+    background: #fff;
+}
+
+:root[data-theme="dark"] body {
+    background: var(--bg-color);
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .site-header,
+:root[data-theme="dark"] .subnav-wrap {
+    background: #0b1220;
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .brand-link:hover .brand-name {
+    border-bottom-color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .nav-link {
+    color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .nav-link:hover {
+    color: #f8fafc;
+    background: #1f2937;
+}
+
+:root[data-theme="dark"] .nav-link-active {
+    background: rgba(255, 107, 107, 0.18);
+    color: #ff8c8c;
+}
+
+:root[data-theme="dark"] .theme-toggle {
+    background: #1f2937;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .theme-toggle:hover {
+    background: #111827;
+    color: #ff8c8c;
+}
+
+:root[data-theme="dark"] .subnav-link {
+    background: #1f2937;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .subnav-link:hover {
+    background: #111827;
+    border-color: var(--accent-red);
+}
+
+:root[data-theme="dark"] .search-container,
+:root[data-theme="dark"] .results-wrapper {
+    background: #0f172a;
+}
+
+:root[data-theme="dark"] .search-box-card,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .games-card,
+:root[data-theme="dark"] .comparator-mode-card {
+    background: #111827;
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .comparator-player-card {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+:root[data-theme="dark"] .changelog-entry {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+:root[data-theme="dark"] .contact-list {
+    border-color: #334155;
+}
+
+:root[data-theme="dark"] .contact-row {
+    background: #0f172a;
+    border-bottom-color: #334155;
+}
+
+:root[data-theme="dark"] .contact-copy-btn {
+    background: #1f2937;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .contact-copy-btn:hover {
+    background: #111827;
+    color: #ff8c8c;
+}
+
+:root[data-theme="dark"] .recent-search-chip {
+    background: #1f2937;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .recent-search-chip:hover {
+    background: #111827;
+    color: #cbd5e1;
+    border-color: #3a4b62;
+}
+
+:root[data-theme="dark"] .recent-search-chip-remove {
+    color: #94a3b8;
+}
+
+:root[data-theme="dark"] .recent-search-chip-remove:hover {
+    color: #ff8c8c;
+    border-color: rgba(255, 140, 140, 0.45);
+    background: rgba(255, 140, 140, 0.12);
+}
+
+:root[data-theme="dark"] .faq-item {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+:root[data-theme="dark"] .faq-question {
+    border-bottom-color: #334155;
+}
+
+:root[data-theme="dark"] .faq-pill-answer {
+    background: #1f2937;
+    color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .policy-section {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+:root[data-theme="dark"] .comparator-player-card h3 {
+    color: #e5e7eb;
+}
+
+:root[data-theme="dark"] .search-box-card p,
+:root[data-theme="dark"] .stats-list p,
+:root[data-theme="dark"] .overall-stats-row,
+:root[data-theme="dark"] .overall-stats-row strong,
+:root[data-theme="dark"] .section-title {
+    color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .stats-list p span:not(.status-online):not(.status-offline):not(.guild-name),
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] .comparator-mode-title,
+:root[data-theme="dark"] .guild-member-name,
+:root[data-theme="dark"] .guild-member-username {
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .game-header {
+    background: #1f2937;
+    color: #e2e8f0;
+}
+
+:root[data-theme="dark"] .game-header:hover {
+    background: #273548;
+    color: #ff8c8c;
+}
+
+:root[data-theme="dark"] .game-panel {
+    background: #0f172a;
+}
+
+:root[data-theme="dark"] .stats-table th,
+:root[data-theme="dark"] .stats-table td,
+:root[data-theme="dark"] .comparator-mode-table th,
+:root[data-theme="dark"] .comparator-mode-table td,
+:root[data-theme="dark"] .overall-stats-row {
+    border-color: #243244;
+}
+
+:root[data-theme="dark"] .stats-table tbody tr:hover {
+    background-color: #152133;
+}
+
+:root[data-theme="dark"] input {
+    background: #0f172a;
+    color: var(--text-primary);
+    border-color: #334155;
+}
+
+:root[data-theme="dark"] input::placeholder {
+    color: #7f8ea3;
+}
+
+:root[data-theme="dark"] .site-footer {
+    background: #020617;
+    border-top-color: #1e293b;
+}
+
+:root[data-theme="dark"] .back-button {
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+}
+
+:root[data-theme="dark"] .back-button:hover {
+    background: #273548;
+    color: #f8fafc;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 8px 13px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
+    background: #f0f2f5;
+}
+
+.nav-link-active {
+    color: #ff6e61;
+    background: #f8eded;
+}
+
+h1, h2, h3 { margin: 0; }
+h1 { font-size: 28px; margin-bottom: 10px; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 22px; margin-bottom: 20px; font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 16px; color: var(--text-primary); text-transform: none; letter-spacing: 0; font-weight: 700; margin-bottom: 22px; }
+
+/* ОБЩЕЕ: Скрытие */
+.hidden { display: none !important; }
+
+/* === LOADING OVERLAY === */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid #e5eaf1;
+    border-top-color: var(--accent-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-overlay::after {
+    content: 'Loading...';
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
+}
+
+:root[data-theme="dark"] .loading-overlay {
+    background: #0b1220;
+}
+
+:root[data-theme="dark"] .spinner {
+    border-color: #243244;
+    border-top-color: var(--accent-red);
+}
