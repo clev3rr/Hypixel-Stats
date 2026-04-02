@@ -256,16 +256,27 @@
 
                 <article class="changelog-entry">
                     <div class="changelog-entry-header">
-                        <h4>April 2, 2026 (22:44) — Architecture & Compliance Update</h4>
+                        <h4>April 2, 2026 (23:45) — Player Comparator Expansion & Polish</h4>
                     </div>
 
+                    <p>Major update to the Player Comparator feature: all 21 minigames are now supported with improved typography, smart mode handling, and complete stats coverage.</p>
+
+                    <h5>Comparator: Game Coverage</h5>
                     <ul>
-                        <li>Frontend architecture was split into focused modules: <strong>core</strong>, <strong>navigation</strong>, <strong>stats-render</strong>, <strong>player</strong>, <strong>compare</strong>, <strong>guild</strong>, and <strong>main</strong>.</li>
-                        <li>Legacy monolithic script flow was removed from runtime and replaced with a clean entrypoint-based loading order.</li>
-                        <li>Added server-side API response caching for player and guild endpoints to reduce duplicate upstream requests.</li>
-                        <li>Added explicit unofficial-project disclaimer and API compliance notes in FAQ/Privacy.</li>
-                        <li>Prepared repository for collaboration/publication with <strong>.env.example</strong> and a structured <strong>README</strong>.</li>
+                        <li>Expanded comparator to include all 21 configured minigames in alphabetical order: Arcade, Arena, Battleground, Bedwars, Duels, GingerBread, HungerGames, Legacy, MCGO, MurderMystery, Paintball, Quake, SkyClash, SkyWars, SpeedUHC, SuperSmash, TNTGames, TrueCombat, UHC, VampireZ, and Walls3.</li>
+                        <li>Games with rich mode implementations (Arena, Bedwars, Quake, SkyClash, SkyWars, SpeedUHC) now display both Overall stats and a detailed Modes comparison table, while 15 other games show Overall only for clarity.</li>
+                        <li>Added automatic conversion of simple game configs (GAMES_CONFIG_SIMPLE) to comparator format, ensuring VampireZ, GingerBread, TrueCombat, and others display correctly.</li>
                     </ul>
+
+                    <h5>Comparator: Visual & Data Refinement</h5>
+                    <ul>
+                        <li>Increased typography across comparator section: title (+1px), section labels (+1px), table text (+1px), headers (+1px), player summary text (+1px) for improved readability without distorting layout.</li>
+                        <li>Implemented smart section headers for UHC: Overall, Teams, and Solo are now visually grouped with consistent styling.</li>
+                        <li>Removed duplicate "Overall" heading in UHC; added visual separation for Teams and Solo sections to reduce redundancy.</li>
+                        <li>Filtered out low-value fields: removed "Time in forcefield (HH-MM-SS)" from Paintball comparator since it typically shows 00:00:00.</li>
+                        <li>Added fallback logic for TNT Tag Wins to handle both `wins_tnttag` and `wins_tag` keys, improving data retrieval reliability.</li>
+                    </ul>
+
                 </article>
 
                 <article class="changelog-entry">
