@@ -1134,9 +1134,9 @@ app.get('/api/guild/:name', async (req, res) => {
 
         setCachedJson(cacheKey, responsePayload);
         res.json(responsePayload);
-        res.json(responsePayload);
     } catch (error) {
         console.error("Ошибка при получении гильдии:", error.message);
+        if (res.headersSent) return;
         res.status(500).json({ error: 'Произошла ошибка при получении данных о гильдии.' });
     }
 });

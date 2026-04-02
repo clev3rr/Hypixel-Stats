@@ -256,7 +256,21 @@
 
                 <article class="changelog-entry">
                     <div class="changelog-entry-header">
-                        <h4>April 2, 2026 — Major Stats Update</h4>
+                        <h4>April 2, 2026 (22:44) — Architecture & Compliance Update</h4>
+                    </div>
+
+                    <ul>
+                        <li>Frontend architecture was split into focused modules: <strong>core</strong>, <strong>navigation</strong>, <strong>stats-render</strong>, <strong>player</strong>, <strong>compare</strong>, <strong>guild</strong>, and <strong>main</strong>.</li>
+                        <li>Legacy monolithic script flow was removed from runtime and replaced with a clean entrypoint-based loading order.</li>
+                        <li>Added server-side API response caching for player and guild endpoints to reduce duplicate upstream requests.</li>
+                        <li>Added explicit unofficial-project disclaimer and API compliance notes in FAQ/Privacy.</li>
+                        <li>Prepared repository for collaboration/publication with <strong>.env.example</strong> and a structured <strong>README</strong>.</li>
+                    </ul>
+                </article>
+
+                <article class="changelog-entry">
+                    <div class="changelog-entry-header">
+                        <h4>April 2, 2026 (20:17) — Major Stats Update</h4>
                     </div>
 
                     <p>Today, two major features were added: a full <strong>Guild Stats</strong> experience and a new <strong>Player Comparator</strong> section. Below is a detailed breakdown of what was implemented.</p>
