@@ -510,7 +510,7 @@
 
     .comparator-mode-table {
         min-width: 820px;
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .comparator-overall-table {
@@ -522,12 +522,12 @@
     }
 
     .comparator-player-card h3 {
-        font-size: 17px;
+        font-size: 18px;
         margin-bottom: 8px;
     }
 
     .comparator-player-card .stats-list p {
-        font-size: 14px;
+        font-size: 15px;
     }
 }
 
@@ -571,10 +571,10 @@
     }
 
     .comparator-mode-title {
-        font-size: 14px;
+        font-size: 15px;
     }
 
     .comparator-section-label {
-        font-size: 11px;
+        font-size: 12px;
     }
 }

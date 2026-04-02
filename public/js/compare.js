@@ -84,6 +84,8 @@ async function comparePlayers() {
             const prefix = String(mode?.apiPrefix || '').toLowerCase();
             const suffix = String(mode?.apiSuffix || '').toLowerCase();
             const hasModeScope = Boolean(prefix || suffix);
+            const cleanPrefix = prefix.endsWith('_') ? prefix.slice(0, -1) : prefix;
+            const cleanSuffix = suffix.startsWith('_') ? suffix.slice(1) : suffix;
 
             const aliases = field === 'deaths'
                 ? ['deaths', 'death']
@@ -95,6 +97,8 @@ async function comparePlayers() {
                             ? ['final_kills', 'final_kill']
                             : field === 'beds'
                                 ? ['beds_broken', 'beds', 'bed_break', 'bed_breaks']
+                                : field === 'blitz_level'
+                                    ? ['blitz_level', 'level']
                                 : [field];
 
             const candidates = [];
@@ -108,9 +112,6 @@ async function comparePlayers() {
 
                 if (gameKey === 'Bedwars') {
                     if (hasModeScope) {
-                        const cleanPrefix = prefix.endsWith('_') ? prefix.slice(0, -1) : prefix;
-                        const cleanSuffix = suffix.startsWith('_') ? suffix.slice(1) : suffix;
-
                         candidates.push(
                             `${prefix}${alias}_bedwars${suffix}`,
                             `${prefix}${alias}_bedwars`,
@@ -121,6 +122,22 @@ async function comparePlayers() {
                         );
                     } else {
                         candidates.push(`${alias}_bedwars${suffix}`, `${alias}_bedwars`);
+                    }
+                }
+
+                if (gameKey === 'HungerGames' && hasModeScope) {
+                    candidates.push(
+                        `${cleanPrefix}_blitz_level`,
+                        `${cleanPrefix}blitz_level`,
+                        `${cleanPrefix}_level`,
+                        `${cleanPrefix}level`
+                    );
+
+                    if (cleanSuffix) {
+                        candidates.push(
+                            `${cleanPrefix}_blitz_level_${cleanSuffix}`,
+                            `${cleanPrefix}_level_${cleanSuffix}`
+                        );
                     }
                 }
             }
@@ -145,7 +162,124 @@ async function comparePlayers() {
             const secondStats = secondData.stats || {};
 
             const gameCards = [];
-            const comparatorGames = ['Bedwars', 'SkyWars'];
+            const comparatorGames = [
+                'Arcade',
+                'Arena',
+                'Battleground',
+                'Bedwars',
+                'Duels',
+                'GingerBread',
+                'HungerGames',
+                'Legacy',
+                'MCGO',
+                'MurderMystery',
+                'Paintball',
+                'Quake',
+                'SkyClash',
+                'SkyWars',
+                'SpeedUHC',
+                'SuperSmash',
+                'TNTGames',
+                'TrueCombat',
+                'UHC',
+                'VampireZ',
+                'Walls3'
+            ];
+            const getComparatorConfig = (gameKey) => {
+                return GAMES_CONFIG_DETAILED[gameKey]
+                    || (typeof GAMES_CONFIG_SIMPLE === 'object' ? GAMES_CONFIG_SIMPLE[gameKey] : null)
+                    || null;
+            };
+
+            const sortedComparatorGames = comparatorGames
+                .filter(gameKey => Boolean(getComparatorConfig(gameKey)))
+                .sort((leftKey, rightKey) => {
+                    const leftName = String(getComparatorConfig(leftKey)?.name || leftKey);
+                    const rightName = String(getComparatorConfig(rightKey)?.name || rightKey);
+                    return leftName.localeCompare(rightName, 'en', { sensitivity: 'base' });
+                });
+
+            const getComparatorOverallFields = (gameKey, config) => {
+                if (gameKey === 'MurderMystery') {
+                    return [
+                        { label: 'Coins', key: 'coins' },
+                        { label: 'Kills', key: 'kills' },
+                        { label: 'Wins', key: 'wins' },
+                        { label: 'Deaths', key: 'deaths' },
+                        { label: 'Bow Kills', key: 'bow_kills' },
+                        { label: 'Hero Kills', key: 'was_hero' },
+                        { label: 'K/D', calc: s => s.deaths ? parseFloat((Number(s.kills || 0) / Number(s.deaths || 1)).toFixed(3)) : Number(s.kills || 0) },
+                        { label: 'W/L', calc: s => s.deaths ? parseFloat((Number(s.wins || 0) / Number(s.deaths || 1)).toFixed(3)) : Number(s.wins || 0) }
+                    ];
+                }
+
+                if (gameKey === 'UHC') {
+                    return [
+                        { label: 'Coins', key: 'coins' },
+                        { label: 'Score', key: 'score' },
+                        { section: 'Teams' },
+                        { label: 'Teams Kills', calc: s => getUhcModeStat(s, 'teams', 'kills') },
+                        { label: 'Teams Deaths', calc: s => getUhcModeStat(s, 'teams', 'deaths') },
+                        { label: 'Teams Wins', calc: s => getUhcModeStat(s, 'teams', 'wins') },
+                        { label: 'Teams K/D', calc: s => {
+                            const kills = Number(getUhcModeStat(s, 'teams', 'kills')) || 0;
+                            const deaths = Number(getUhcModeStat(s, 'teams', 'deaths')) || 0;
+                            return deaths > 0 ? parseFloat((kills / deaths).toFixed(3)) : kills;
+                        }},
+                        { section: 'Solo' },
+                        { label: 'Solo Kills', calc: s => getUhcModeStat(s, 'solo', 'kills') },
+                        { label: 'Solo Deaths', calc: s => getUhcModeStat(s, 'solo', 'deaths') },
+                        { label: 'Solo Wins', calc: s => getUhcModeStat(s, 'solo', 'wins') },
+                        { label: 'Solo K/D', calc: s => {
+                            const kills = Number(getUhcModeStat(s, 'solo', 'kills')) || 0;
+                            const deaths = Number(getUhcModeStat(s, 'solo', 'deaths')) || 0;
+                            return deaths > 0 ? parseFloat((kills / deaths).toFixed(3)) : kills;
+                        }}
+                    ];
+                }
+
+                if (gameKey === 'Paintball') {
+                    return (config.overall || []).filter(field => {
+                        const label = String(field?.label || '').toLowerCase();
+                        return !label.includes('time in forcefield');
+                    });
+                }
+
+                if (gameKey === 'Quake') {
+                    return [
+                        { label: 'Coins', key: 'coins' },
+                        { label: 'Highest Killstreak', key: 'highest_killstreak' },
+                        { label: 'Dash Power', key: 'dash_power' },
+                        { label: 'Dash Cooldown', key: 'dash_cooldown' }
+                    ];
+                }
+
+                // Для простых конфигов (из GAMES_CONFIG_SIMPLE) преобразуем fields в overall формат
+                if (config.fields && !config.overall) {
+                    if (Array.isArray(config.fields)) {
+                        return config.fields;
+                    }
+                    if (typeof config.fields === 'object') {
+                        return Object.entries(config.fields).map(([label, fieldConfig]) => ({
+                            label,
+                            calc: typeof fieldConfig.calc === 'function'
+                                ? fieldConfig.calc
+                                : (s) => {
+                                    if (Array.isArray(fieldConfig.keys)) {
+                                        for (const key of fieldConfig.keys) {
+                                            if (s[key] !== undefined && s[key] !== null) {
+                                                return s[key];
+                                            }
+                                        }
+                                    }
+                                    return 0;
+                                }
+                        }));
+                    }
+                }
+
+                return config.overall || [];
+            };
 
             const getComparatorMetricConfig = (gameKey) => {
                 if (gameKey === 'Bedwars') {
@@ -171,6 +305,12 @@ async function comparePlayers() {
                         { label: 'Losses', field: 'losses', preferHigher: false, type: 'number' },
                         { label: 'K/D', field: 'kd', preferHigher: true, type: 'ratio' },
                         { label: 'W/L', field: 'wl', preferHigher: true, type: 'ratio' }
+                    ];
+                }
+
+                if (gameKey === 'HungerGames') {
+                    return [
+                        { label: 'Level', field: 'blitz_level', preferHigher: true, type: 'number' }
                     ];
                 }
 
@@ -224,16 +364,31 @@ async function comparePlayers() {
 
             const isLowerBetter = (label) => /deaths?|loss(es)?/i.test(String(label || ''));
 
-            for (const gameKey of comparatorGames) {
-                const config = GAMES_CONFIG_DETAILED[gameKey];
+            for (const gameKey of sortedComparatorGames) {
+                const config = getComparatorConfig(gameKey);
                 if (!config) continue;
-                if (!Array.isArray(config.modes) || config.modes.length === 0) continue;
+                const hasModes = Array.isArray(config.modes) && config.modes.length > 0;
 
                 const firstGameStats = firstStats[gameKey] || {};
                 const secondGameStats = secondStats[gameKey] || {};
                 const metrics = getComparatorMetricConfig(gameKey);
 
-                const overallRows = (config.overall || []).map(field => {
+                const overallRows = getComparatorOverallFields(gameKey, config)
+                .filter(field => {
+                    if (field && typeof field === 'object' && field.section) return true;
+                    if (gameKey !== 'Duels') return true;
+                    const label = String(field?.label || '').toLowerCase();
+                    return !label.includes('winstreak');
+                })
+                .map(field => {
+                    if (field && typeof field === 'object' && field.section) {
+                        return `
+                        <tr class="comparator-overall-section-row">
+                            <td colspan="3" class="comparator-overall-section-title">${String(field.section)}</td>
+                        </tr>
+                    `;
+                    }
+
                     const label = field?.label || 'Stat';
                     const leftRaw = resolveOverallValue(firstGameStats, field);
                     const rightRaw = resolveOverallValue(secondGameStats, field);
@@ -260,7 +415,7 @@ async function comparePlayers() {
                     `;
                 }).join('');
 
-                const rows = config.modes.map(mode => {
+                const rows = hasModes ? config.modes.map(mode => {
                     const base = {
                         left: {
                             kills: getModeStatForComparator(firstGameStats, gameKey, mode, 'kills'),
@@ -269,7 +424,8 @@ async function comparePlayers() {
                             losses: getModeStatForComparator(firstGameStats, gameKey, mode, 'losses'),
                             final_kills: getModeStatForComparator(firstGameStats, gameKey, mode, 'final_kills'),
                             final_deaths: getModeStatForComparator(firstGameStats, gameKey, mode, 'final_deaths'),
-                            beds: getModeStatForComparator(firstGameStats, gameKey, mode, 'beds')
+                            beds: getModeStatForComparator(firstGameStats, gameKey, mode, 'beds'),
+                            blitz_level: getModeStatForComparator(firstGameStats, gameKey, mode, 'blitz_level')
                         },
                         right: {
                             kills: getModeStatForComparator(secondGameStats, gameKey, mode, 'kills'),
@@ -278,7 +434,8 @@ async function comparePlayers() {
                             losses: getModeStatForComparator(secondGameStats, gameKey, mode, 'losses'),
                             final_kills: getModeStatForComparator(secondGameStats, gameKey, mode, 'final_kills'),
                             final_deaths: getModeStatForComparator(secondGameStats, gameKey, mode, 'final_deaths'),
-                            beds: getModeStatForComparator(secondGameStats, gameKey, mode, 'beds')
+                            beds: getModeStatForComparator(secondGameStats, gameKey, mode, 'beds'),
+                            blitz_level: getModeStatForComparator(secondGameStats, gameKey, mode, 'blitz_level')
                         }
                     };
 
@@ -297,16 +454,13 @@ async function comparePlayers() {
                         }
                     };
 
-                    const activity =
-                        base.left.kills + base.right.kills +
-                        base.left.wins + base.right.wins +
-                        base.left.deaths + base.right.deaths +
-                        base.left.losses + base.right.losses +
-                        base.left.final_kills + base.right.final_kills +
-                        base.left.final_deaths + base.right.final_deaths +
-                        base.left.beds + base.right.beds;
+                    const hasMetricData = metrics.some(metric => {
+                        const leftValue = Number(valueByField.left[metric.field] || 0);
+                        const rightValue = Number(valueByField.right[metric.field] || 0);
+                        return leftValue > 0 || rightValue > 0;
+                    });
 
-                    if (activity <= 0) return '';
+                    if (!hasMetricData) return '';
 
                     const metricCells = metrics.map(metric => {
                         const leftValue = valueByField.left[metric.field] || 0;
@@ -326,9 +480,11 @@ async function comparePlayers() {
                             ${metricCells}
                         </tr>
                     `;
-                }).filter(Boolean).join('');
+                }).filter(Boolean).join('') : '';
 
-                if (!overallRows && !rows) continue;
+                const showModes = hasModes && ['Arena', 'Bedwars', 'Quake', 'SkyClash', 'SkyWars', 'SpeedUHC'].includes(gameKey) && rows.length > 0;
+
+                if (!overallRows && !showModes) continue;
 
                 const metricHeaders = metrics.map(metric => `
                     <th><span class="cmp-head-name">${firstData.name}</span><span class="cmp-head-metric">${metric.label}</span></th>
@@ -352,6 +508,7 @@ async function comparePlayers() {
                             </table>
                         </div>
 
+                        ${showModes ? `
                         <div class="comparator-section-label">Modes</div>
                         <div class="stats-table-wrapper">
                             <table class="comparator-mode-table">
@@ -363,7 +520,7 @@ async function comparePlayers() {
                                 </thead>
                                 <tbody>${rows}</tbody>
                             </table>
-                        </div>
+                        </div>` : ''}
                     </div>
                 `);
             }

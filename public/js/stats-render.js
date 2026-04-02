@@ -367,7 +367,7 @@ const GAMES_CONFIG_DETAILED = {
         overall: [
             { label: 'Coins', key: 'coins' },
             { label: 'TNT Run Wins', key: 'wins_tntrun' },
-            { label: 'TNT Tag Wins', key: 'wins_tnttag' },
+            { label: 'TNT Tag Wins', calc: s => s.wins_tnttag || s.wins_tag || 0 },
             { label: 'PVP Run Wins', key: 'wins_pvprun' },
             { label: 'Bowspleef Wins', key: 'wins_bowspleef' },
             // В Bowspleef поражение — это смерть (deaths), считаем по ней
@@ -702,7 +702,6 @@ const GAMES_CONFIG_SIMPLE = {
     },
     Battleground: {
         name: 'Warlords', icon: 'fa-khanda', fields: {
-            '--- More things will be added. ---': { calc: () => '' },
             'Coins': { keys: ['coins'] },
             'Kills': { keys: ['kills'] },
             'Assists': { keys: ['assists'] },

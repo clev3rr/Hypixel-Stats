@@ -176,7 +176,7 @@
 }
 
 .comparator-mode-title {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 8px;
@@ -188,7 +188,7 @@
 }
 
 .comparator-section-label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--text-secondary);
     margin: 8px 0 6px;
@@ -203,10 +203,24 @@
     font-weight: 700;
 }
 
+.comparator-overall-section-row td {
+    border-bottom: 1px solid #edf1f7;
+    padding: 8px 6px;
+    text-align: left;
+}
+
+.comparator-overall-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
 .comparator-mode-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .comparator-mode-table th,
@@ -229,14 +243,14 @@
 
 .cmp-head-name {
     font-weight: 700;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .cmp-head-metric {
     font-weight: 600;
     opacity: 0.9;
     margin-top: 2px;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .comparator-mode-table th:first-child,
@@ -280,11 +294,11 @@
 
 .comparator-player-card h3 {
     margin-bottom: 12px;
-    font-size: 20px;
+    font-size: 21px;
 }
 
 .comparator-player-card .stats-list p {
-    font-size: 16px;
+    font-size: 17px;
 }
 
 .cmp-rank-prefix {
