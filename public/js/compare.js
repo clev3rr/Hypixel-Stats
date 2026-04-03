@@ -104,8 +104,13 @@ async function comparePlayers() {
             const candidates = [];
             for (const alias of aliases) {
                 if (hasModeScope) {
-                    candidates.push(`${prefix}${alias}${suffix}`, `${prefix}${alias}`);
-                    if (suffix) candidates.push(`${alias}${suffix}`);
+                    if (prefix && suffix) {
+                        candidates.push(`${prefix}${alias}${suffix}`, `${prefix}${alias}`, `${alias}${suffix}`);
+                    } else if (prefix) {
+                        candidates.push(`${prefix}${alias}`);
+                    } else if (suffix) {
+                        candidates.push(`${alias}${suffix}`);
+                    }
                 } else {
                     candidates.push(alias);
                 }
@@ -143,7 +148,41 @@ async function comparePlayers() {
             }
 
             const found = getNumberFromStatKeys(gameStats, candidates.filter(Boolean));
-            return Number.isFinite(found) ? found : 0;
+            if (Number.isFinite(found)) return found;
+
+            if (gameKey === 'Arena' && suffix) {
+                const modeToken = cleanSuffix;
+                const otherModes = ['1v1', '2v2', '4v4'].filter(token => token !== modeToken);
+
+                const arenaExactCandidates = [];
+                for (const alias of aliases) {
+                    arenaExactCandidates.push(
+                        `${alias}${suffix}`,
+                        `${alias}_${modeToken}`,
+                        `${modeToken}_${alias}`,
+                        `arena_${alias}${suffix}`,
+                        `arena_${alias}_${modeToken}`,
+                        `${alias}_${modeToken}_arena`
+                    );
+                }
+
+                const arenaExact = getNumberFromStatKeys(gameStats, arenaExactCandidates.filter(Boolean));
+                if (Number.isFinite(arenaExact)) return arenaExact;
+
+                for (const [statKey, statValue] of Object.entries(gameStats)) {
+                    const key = String(statKey || '').toLowerCase();
+                    if (!key.includes(modeToken)) continue;
+                    if (otherModes.some(token => key.includes(token))) continue;
+
+                    const hasAlias = aliases.some(alias => key.includes(String(alias).toLowerCase()));
+                    if (!hasAlias) continue;
+
+                    const parsed = Number(statValue);
+                    if (Number.isFinite(parsed)) return parsed;
+                }
+            }
+
+            return 0;
         };
 
         const getClassForPair = (leftValue, rightValue, preferHigher, side) => {
@@ -201,6 +240,24 @@ async function comparePlayers() {
 
             const getComparatorOverallFields = (gameKey, config) => {
                 if (gameKey === 'MurderMystery') {
+                    const mmModeValue = (stats, suffix, key) => {
+                        if (!suffix) return Number(stats?.[key] || 0);
+                        return Number(stats?.[`${key}${suffix}`] || 0);
+                    };
+
+                    const mmModeKd = (stats, suffix) => {
+                        const kills = mmModeValue(stats, suffix, 'kills');
+                        const deaths = mmModeValue(stats, suffix, 'deaths');
+                        return deaths > 0 ? parseFloat((kills / deaths).toFixed(3)) : kills;
+                    };
+
+                    const mmModeWl = (stats, suffix) => {
+                        const wins = mmModeValue(stats, suffix, 'wins');
+                        const deaths = mmModeValue(stats, suffix, 'deaths');
+                        if (deaths > 0) return parseFloat((wins / deaths).toFixed(3));
+                        return wins > 0 ? '∞' : 0;
+                    };
+
                     return [
                         { label: 'Coins', key: 'coins' },
                         { label: 'Kills', key: 'kills' },
@@ -209,7 +266,31 @@ async function comparePlayers() {
                         { label: 'Bow Kills', key: 'bow_kills' },
                         { label: 'Hero Kills', key: 'was_hero' },
                         { label: 'K/D', calc: s => s.deaths ? parseFloat((Number(s.kills || 0) / Number(s.deaths || 1)).toFixed(3)) : Number(s.kills || 0) },
-                        { label: 'W/L', calc: s => s.deaths ? parseFloat((Number(s.wins || 0) / Number(s.deaths || 1)).toFixed(3)) : Number(s.wins || 0) }
+                        { label: 'W/L', calc: s => Number(s.deaths || 0) > 0 ? parseFloat((Number(s.wins || 0) / Number(s.deaths || 1)).toFixed(3)) : (Number(s.wins || 0) > 0 ? '∞' : 0) },
+
+                        { section: 'Classic Stats' },
+                        { label: 'Kills', calc: s => mmModeValue(s, '_MURDER_CLASSIC', 'kills') },
+                        { label: 'Wins', calc: s => mmModeValue(s, '_MURDER_CLASSIC', 'wins') },
+                        { label: 'Deaths', calc: s => mmModeValue(s, '_MURDER_CLASSIC', 'deaths') },
+                        { label: 'Bow Kills', calc: s => mmModeValue(s, '_MURDER_CLASSIC', 'bow_kills') },
+                        { label: 'K/D', calc: s => mmModeKd(s, '_MURDER_CLASSIC') },
+                        { label: 'W/L', calc: s => mmModeWl(s, '_MURDER_CLASSIC') },
+
+                        { section: 'Hardcore Stats' },
+                        { label: 'Kills', calc: s => mmModeValue(s, '_MURDER_HARDCORE', 'kills') },
+                        { label: 'Wins', calc: s => mmModeValue(s, '_MURDER_HARDCORE', 'wins') },
+                        { label: 'Deaths', calc: s => mmModeValue(s, '_MURDER_HARDCORE', 'deaths') },
+                        { label: 'Bow Kills', calc: s => mmModeValue(s, '_MURDER_HARDCORE', 'bow_kills') },
+                        { label: 'K/D', calc: s => mmModeKd(s, '_MURDER_HARDCORE') },
+                        { label: 'W/L', calc: s => mmModeWl(s, '_MURDER_HARDCORE') },
+
+                        { section: 'Assassins Stats' },
+                        { label: 'Kills', calc: s => mmModeValue(s, '_MURDER_ASSASSINS', 'kills') },
+                        { label: 'Wins', calc: s => mmModeValue(s, '_MURDER_ASSASSINS', 'wins') },
+                        { label: 'Deaths', calc: s => mmModeValue(s, '_MURDER_ASSASSINS', 'deaths') },
+                        { label: 'Bow Kills', calc: s => mmModeValue(s, '_MURDER_ASSASSINS', 'bow_kills') },
+                        { label: 'K/D', calc: s => mmModeKd(s, '_MURDER_ASSASSINS') },
+                        { label: 'W/L', calc: s => mmModeWl(s, '_MURDER_ASSASSINS') }
                     ];
                 }
 
@@ -314,6 +395,16 @@ async function comparePlayers() {
                     ];
                 }
 
+                if (gameKey === 'MurderMystery') {
+                    return [
+                        { label: 'Kills', field: 'kills', preferHigher: true, type: 'number' },
+                        { label: 'Wins', field: 'wins', preferHigher: true, type: 'number' },
+                        { label: 'Deaths', field: 'deaths', preferHigher: false, type: 'number' },
+                        { label: 'Hero', field: 'was_hero', preferHigher: true, type: 'number' },
+                        { label: 'Bow Kills', field: 'bow_kills', preferHigher: true, type: 'number' }
+                    ];
+                }
+
                 return [
                     { label: 'Kills', field: 'kills', preferHigher: true, type: 'number' },
                     { label: 'Wins', field: 'wins', preferHigher: true, type: 'number' },
@@ -347,6 +438,7 @@ async function comparePlayers() {
             };
 
             const formatOverallValue = (value) => {
+                if (typeof value === 'number' && Number.isNaN(value)) return '0';
                 if (typeof value === 'number' && Number.isFinite(value)) {
                     if (!Number.isInteger(value)) return value.toFixed(3);
                     return value.toLocaleString('en-US');
@@ -415,12 +507,18 @@ async function comparePlayers() {
                     `;
                 }).join('');
 
-                const rows = hasModes ? config.modes.map(mode => {
+                const modesToRender = gameKey === 'MurderMystery'
+                    ? config.modes.filter(mode => ['All', 'Classic', 'Assassins', 'Hardcore'].includes(String(mode.Mode || '')))
+                    : config.modes;
+
+                const rows = hasModes ? modesToRender.map(mode => {
                     const base = {
                         left: {
                             kills: getModeStatForComparator(firstGameStats, gameKey, mode, 'kills'),
                             wins: getModeStatForComparator(firstGameStats, gameKey, mode, 'wins'),
                             deaths: getModeStatForComparator(firstGameStats, gameKey, mode, 'deaths'),
+                            was_hero: getModeStatForComparator(firstGameStats, gameKey, mode, 'was_hero'),
+                            bow_kills: getModeStatForComparator(firstGameStats, gameKey, mode, 'bow_kills'),
                             losses: getModeStatForComparator(firstGameStats, gameKey, mode, 'losses'),
                             final_kills: getModeStatForComparator(firstGameStats, gameKey, mode, 'final_kills'),
                             final_deaths: getModeStatForComparator(firstGameStats, gameKey, mode, 'final_deaths'),
@@ -431,6 +529,8 @@ async function comparePlayers() {
                             kills: getModeStatForComparator(secondGameStats, gameKey, mode, 'kills'),
                             wins: getModeStatForComparator(secondGameStats, gameKey, mode, 'wins'),
                             deaths: getModeStatForComparator(secondGameStats, gameKey, mode, 'deaths'),
+                            was_hero: getModeStatForComparator(secondGameStats, gameKey, mode, 'was_hero'),
+                            bow_kills: getModeStatForComparator(secondGameStats, gameKey, mode, 'bow_kills'),
                             losses: getModeStatForComparator(secondGameStats, gameKey, mode, 'losses'),
                             final_kills: getModeStatForComparator(secondGameStats, gameKey, mode, 'final_kills'),
                             final_deaths: getModeStatForComparator(secondGameStats, gameKey, mode, 'final_deaths'),
@@ -460,7 +560,9 @@ async function comparePlayers() {
                         return leftValue > 0 || rightValue > 0;
                     });
 
-                    if (!hasMetricData) return '';
+                    const keepZeroModeRow = gameKey === 'Arena' || gameKey === 'MurderMystery';
+
+                    if (!hasMetricData && !keepZeroModeRow) return '';
 
                     const metricCells = metrics.map(metric => {
                         const leftValue = valueByField.left[metric.field] || 0;
@@ -482,7 +584,7 @@ async function comparePlayers() {
                     `;
                 }).filter(Boolean).join('') : '';
 
-                const showModes = hasModes && ['Arena', 'Bedwars', 'Quake', 'SkyClash', 'SkyWars', 'SpeedUHC'].includes(gameKey) && rows.length > 0;
+                const showModes = hasModes && ['Arena', 'Bedwars', 'MurderMystery', 'Quake', 'SkyClash', 'SkyWars', 'SpeedUHC'].includes(gameKey) && rows.length > 0;
 
                 if (!overallRows && !showModes) continue;
 

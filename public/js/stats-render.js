@@ -586,8 +586,16 @@ const GAMES_CONFIG_SIMPLE = {
             'Deaths': { keys: ['deaths'] },
             'Wins': { keys: ['wins'] },
             'Losses': { keys: ['losses'] },
-            'K/D': { calc: s => (s.deaths || 0) > 0 ? parseFloat((s.kills / s.deaths).toFixed(3)) : (s.kills || 0) },
-            'W/L': { calc: s => (s.losses || 0) > 0 ? parseFloat((s.wins / s.losses).toFixed(3)) : (s.wins || 0) }
+            'K/D': { calc: s => {
+                const kills = Number(s.kills) || 0;
+                const deaths = Number(s.deaths) || 0;
+                return deaths > 0 ? parseFloat((kills / deaths).toFixed(3)) : kills;
+            }},
+            'W/L': { calc: s => {
+                const wins = Number(s.wins) || 0;
+                const losses = Number(s.losses) || 0;
+                return losses > 0 ? parseFloat((wins / losses).toFixed(3)) : wins;
+            }}
         }
     },
     GingerBread: {
