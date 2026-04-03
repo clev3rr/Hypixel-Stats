@@ -25,6 +25,20 @@ const GAMES_CONFIG_DETAILED = {
             { 'Mode': '4v4v4v4', apiPrefix: 'four_four_' }
         ]
     },
+    BuildBattle: {
+        name: 'Build Battle', icon: 'fa-hammer',
+        overall: [
+            { label: 'Score', calc: s => getNumberFromStatKeys(s, ['score_build_battle','score_buildbattle','build_battle_score','score']) || 0 },
+            { label: 'Total Wins', calc: s => getNumberFromStatKeys(s, ['wins_build_battle','wins_buildbattle','wins_build','build_battle_wins','wins_battle_build','wins']) || 0 }
+        ],
+        tableCols: { 'Mode': '', 'Wins': 'wins' },
+        modes: [
+            { Mode: 'Solo', apiSuffix: '_solo_normal' },
+            { Mode: 'Team', apiSuffix: '_teams_normal' },
+            { Mode: 'Guess the Build', apiSuffix: '_guess_the_build' },
+            { Mode: 'Pro Mode', apiSuffix: '_pro_mode' }
+        ]
+    },
     SkyWars: {
         name: 'SkyWars', icon: 'fa-cloud',
         overall: [
@@ -327,9 +341,9 @@ const GAMES_CONFIG_DETAILED = {
             
             // Football
             { label: '--- Football ---', calc: () => '' },
-            { label: 'Wins', key: 'wins_football' },
-            { label: 'Goals', key: 'goals_football' },
-            { label: 'Power Kicks', key: 'powerkicks_football' },
+            { label: 'Wins', calc: s => getNumberFromStatKeys(s, ['wins_soccer','wins_football','football_wins','wins']) || 0 },
+            { label: 'Goals', calc: s => getNumberFromStatKeys(s, ['goals_soccer','goals_football','football_goals','goals']) || 0 },
+            { label: 'Power Kicks', calc: s => getNumberFromStatKeys(s, ['powerkicks_soccer','power_kicks_soccer','powerkicks_football','power_kicks_football','power_kicks','powerkicks']) || 0 },
 
             // Galaxy Wars
             { label: '--- Galaxy Wars ---', calc: () => '' },
@@ -338,17 +352,51 @@ const GAMES_CONFIG_DETAILED = {
             { label: 'Rebel Kills', key: 'sw_rebel_kills' },
             { label: 'Shots Fired', key: 'sw_shots_fired' },
 
-            // Hypixel Says & HITW
-            { label: '--- Others ---', calc: () => '' },
-            { label: 'Hypixel Says Wins', key: 'wins_hypixel_says' },
-            { label: 'Hypixel Says Rounds', key: 'rounds_hypixel_says' },
-            { label: 'HITW Record', key: 'hitw_record_hole_in_the_wall' },
-            { label: 'Farm Hunt Wins', key: 'wins_farm_hunt' },
+            // Farm Hunt
+            { label: '--- Farm Hunt ---', calc: () => '' },
             { label: 'Poop Collected', key: 'poop_collected' },
-            { label: 'Party Games Wins', key: 'wins_party' }
+            { label: 'Farm Hunt Wins', key: 'wins_farm_hunt' },
+
+            // Grinch Simulator
+            { label: '--- Grinch Simulator ---', calc: () => '' },
+            { label: 'Total Gifts Collected', calc: s => getNumberFromStatKeys(s, ['gifts_grinch_simulator_v2','total_gifts_collected','total_gifts']) || 0 },
+            { label: 'Wins', calc: s => getNumberFromStatKeys(s, ['wins_grinch_simulator_v2','wins_grinch_simulator','wins_grinch','wins']) || 0 },
+
+            // Bounty Hunters
+            { label: '--- Bounty Hunters ---', calc: () => '' },
+            { label: 'Wins', calc: s => getNumberFromStatKeys(s, ['wins_oneinthequiver','wins_bounty_hunters','wins_bounty','wins']) || 0 },
+            { label: 'Deaths', calc: s => getNumberFromStatKeys(s, ['deaths_oneinthequiver','deaths_bounty_hunters','deaths_bounty','deaths']) || 0 },
+            { label: 'Bounty Kills', calc: s => getNumberFromStatKeys(s, ['bounty_kills_oneinthequiver','bounty_kills']) || 0 },
+            { label: 'Kills', calc: s => getNumberFromStatKeys(s, ['kills_oneinthequiver','kills_bounty_hunters','kills_bounty','kills']) || 0 },
+
+            // Blocking Dead
+            { label: '--- Blocking Dead ---', calc: () => '' },
+            { label: 'Kills', calc: s => getNumberFromStatKeys(s, ['kills_dayone','kills_blocking_dead','kills_blockingdead','kills']) || 0 },
+            { label: 'Headshots', calc: s => getNumberFromStatKeys(s, ['headshots_dayone','headshots_blocking_dead','headshots']) || 0 },
+            { label: 'Wins', calc: s => getNumberFromStatKeys(s, ['wins_dayone','wins_blocking_dead','wins_blockingdead','wins']) || 0 },
+            { label: 'Melee Weapon', calc: s => s.melee_weapon || s.meleeWeapon || s.last_melee_weapon || s.melee_weapon_dayone || s.meleeWeaponDayone || '' },
+
+            // Capture the Wool
+            { label: '--- Capture the Wool ---', calc: () => '' },
+
+            // Hole in the Wall / Hypixel Says / Dragonwars
+            { label: '--- Hole in the Wall ---', calc: () => '' },
+            { label: 'Hole in the Wall Record (Final)', calc: s => getNumberFromStatKeys(s, ['hitw_record_f','hitw_record_q','hitw_record_hole_in_the_wall']) || 0 },
+            { label: 'Hole in the Wall Record (Qualifying)', key: 'hitw_record_q' },
+            { label: 'Total Hole in the Wall Rounds', key: 'rounds_hole_in_the_wall' },
+            { label: 'Hypixel Says Rounds', calc: s => getNumberFromStatKeys(s, ['rounds_simon_says','rounds_santa_says','rounds_hypixel_says','rounds_hole_in_the_wall']) || 0 },
+            { label: 'Hypixel Says Wins', calc: s => getNumberFromStatKeys(s, ['wins_simon_says','wins_santa_says','wins_hypixel_says']) || 0 },
+            { label: 'Throwout Kills', key: 'kills_throw_out' },
+            { label: 'Throwout Deaths', key: 'deaths_throw_out' },
+            { label: 'Dragon Wars Kills', key: 'kills_dragonwars2' },
+            { label: 'Dragon Wars Wins', key: 'wins_dragonwars2' },
+            { label: 'Max Creeper Attack Wave', calc: s => getNumberFromStatKeys(s, ['max_wave','max_creeper_attack_wave','max_creeper_wave']) || 0 },
+            { label: 'Party Games 1 Wins', key: 'wins_party' },
+            { label: 'Party Games 2 Wins', key: 'wins_party_2' },
+            { label: 'Party Games 3 Wins', key: 'wins_party_3' }
         ],
         tableCols: { 'Game': '' },
-        modes: [] 
+        modes: [],
     },
     Arena: {
         name: 'Arena Brawl', icon: 'fa-gavel',
@@ -919,6 +967,17 @@ function generateDetailedTableAccordion(gameKey, config, stats, container, fullD
         // Нормальная логика для остальных игр
         let overallHtml = '';
         for (const item of config.overall) {
+            const sectionMatch = String(item.label || '').match(/^---\s*(.+?)\s*---$/);
+            if (sectionMatch) {
+                overallHtml += `<div class="overall-stats-section"><div class="section-title">${sectionMatch[1]}</div></div>`;
+
+                if (sectionMatch[1].toLowerCase().includes('capture the wool')) {
+                    overallHtml += getCaptureTheWoolTableHtml();
+                }
+
+                continue;
+            }
+
             let val = item.calc ? item.calc(stats) : (stats[item.key] || 0);
             overallHtml += `<div class="overall-stats-row"><strong>${item.label}:</strong> <span>${typeof val === 'number' ? val.toLocaleString() : val}</span></div>`;
         }
@@ -926,6 +985,56 @@ function generateDetailedTableAccordion(gameKey, config, stats, container, fullD
     }
     
     panel.appendChild(overallContainer);
+
+    function getCaptureTheWoolTableHtml() {
+        const rows = [
+            { mode: 'Total', kills: getNumberFromStatKeys(stats, ['kills_capture_the_wool', 'woolhunt_kills']) || 0, deaths: getNumberFromStatKeys(stats, ['deaths_capture_the_wool', 'woolhunt_deaths']) || 0 },
+            { mode: 'To/On Wool Holder', kills: getNumberFromStatKeys(stats, ['kills_to_on_wool_holder', 'woolhunt_kills_on_woolholder']) || 0, deaths: getNumberFromStatKeys(stats, ['deaths_to_on_wool_holder', 'woolhunt_deaths_to_woolholder']) || 0 },
+            { mode: 'With Wool', kills: getNumberFromStatKeys(stats, ['kills_with_wool', 'woolhunt_kills_with_wool']) || 0, deaths: getNumberFromStatKeys(stats, ['deaths_with_wool', 'woolhunt_deaths_with_wool']) || 0 }
+        ];
+
+        const findWoolStat = (terms) => {
+            let best = null;
+            for (const [key, value] of Object.entries(stats)) {
+                const lower = String(key).toLowerCase();
+                if (!terms.every(term => lower.includes(term))) continue;
+                const parsed = Number(value);
+                if (!Number.isFinite(parsed)) continue;
+                best = best === null ? parsed : Math.max(best, parsed);
+            }
+            return best;
+        };
+
+        const captureWinsRaw = getNumberFromStatKeys(stats, ['wins_capture_the_wool', 'woolhunt_wins', 'wins_capture', 'wins_woolhunt', 'wins_wool_hunt', 'woolhunt_wins', 'wool_hunt_wins', 'woolhunt_win']);
+        const captureLossesRaw = getNumberFromStatKeys(stats, ['losses_capture_the_wool', 'woolhunt_losses', 'losses_capture', 'losses_woolhunt', 'losses_wool_hunt', 'woolhunt_loss', 'wool_hunt_losses']);
+        const captureDrawsRaw = getNumberFromStatKeys(stats, ['draws_capture_the_wool', 'woolhunt_draws', 'ties_capture_the_wool', 'draws_woolhunt', 'woolhunt_ties', 'tie_woolhunt']);
+        const woolsCapturedRaw = getNumberFromStatKeys(stats, ['wools_captured', 'wools_capture', 'captured_wools', 'wool_captured', 'woolhunt_wools_captured', 'woolhunt_wool_captured', 'captured_wool', 'wool_captures']);
+        const woolsStolenRaw = getNumberFromStatKeys(stats, ['wools_stolen', 'stolen_wools', 'wool_stolen', 'woolhunt_wools_stolen', 'woolhunt_wool_stolen', 'stolen_wool']);
+
+        const captureWins = captureWinsRaw !== undefined ? captureWinsRaw : (findWoolStat(['wool', 'win']) || 0);
+        const captureLosses = captureLossesRaw !== undefined ? captureLossesRaw : (findWoolStat(['wool', 'loss']) || 0);
+        const captureDraws = captureDrawsRaw !== undefined ? captureDrawsRaw : (findWoolStat(['wool', 'draw']) || findWoolStat(['wool', 'tie']) || 0);
+        const woolsCaptured = woolsCapturedRaw !== undefined ? woolsCapturedRaw : (findWoolStat(['wool', 'captur']) || 0);
+        const woolsStolen = woolsStolenRaw !== undefined ? woolsStolenRaw : (findWoolStat(['wool', 'stolen']) || 0);
+
+        let html = '<div class="capture-the-wool-container"><div class="overall-stats-section" style="margin-bottom:6px;">';
+        html += `<div class="overall-stats-row"><strong>Wins:</strong> <span>${captureWins.toLocaleString()}</span></div>`;
+        html += `<div class="overall-stats-row"><strong>Losses:</strong> <span>${captureLosses.toLocaleString()}</span></div>`;
+        html += `<div class="overall-stats-row"><strong>Draws:</strong> <span>${captureDraws.toLocaleString()}</span></div>`;
+        html += `<div class="overall-stats-row"><strong>Wools Captured:</strong> <span>${woolsCaptured.toLocaleString()}</span></div>`;
+        html += `<div class="overall-stats-row"><strong>Wools Stolen:</strong> <span>${woolsStolen.toLocaleString()}</span></div>`;
+        html += '</div>';
+
+        html += '<div class="stats-table-wrapper"><table class="stats-table"><thead><tr><th>Mode</th><th>Kills</th><th>Deaths</th></tr></thead><tbody>';
+        for (const row of rows) {
+            html += `<tr><td class="highlight">${row.mode}</td><td>${row.kills.toLocaleString()}</td><td>${row.deaths.toLocaleString()}</td></tr>`;
+        }
+        html += '</tbody></table></div>';
+
+        html += '</div>'; // закрываем capture-the-wool-container
+
+        return html;
+    }
 
     const extractSkyWarsRankedSeasons = () => {
         if (gameKey !== 'SkyWars') return [];
@@ -966,42 +1075,38 @@ function generateDetailedTableAccordion(gameKey, config, stats, container, fullD
     };
 
     const rankedSeasons = extractSkyWarsRankedSeasons();
-    if (gameKey === 'SkyWars') {
+    if (gameKey === 'SkyWars' && rankedSeasons.length > 0) {
         const rankedSection = document.createElement('div');
         rankedSection.className = 'overall-stats-section';
         rankedSection.innerHTML = `
             <div class="section-title">Ranked Seasons</div>
-            ${rankedSeasons.length > 0 ? `
-                <div class="stats-table-wrapper">
-                    <table class="stats-table skywars-ranked-seasons-table" style="min-width: 0; width: 100%;">
-                        <thead>
+            <div class="stats-table-wrapper">
+                <table class="stats-table skywars-ranked-seasons-table" style="min-width: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Season</th>
+                            <th>Date</th>
+                            <th>Rating</th>
+                            <th>Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rankedSeasons.map(entry => `
                             <tr>
-                                <th>Season</th>
-                                <th>Date</th>
-                                <th>Rating</th>
-                                <th>Position</th>
+                                <td>${entry.season || '—'}</td>
+                                <td>${entry.date || '—'}</td>
+                                <td>${Number(entry.rating || 0).toLocaleString('en-US')}</td>
+                                <td>${Number(entry.position || 0).toLocaleString('en-US')}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            ${rankedSeasons.map(entry => `
-                                <tr>
-                                    <td>${entry.season || '—'}</td>
-                                    <td>${entry.date || '—'}</td>
-                                    <td>${Number(entry.rating || 0).toLocaleString('en-US')}</td>
-                                    <td>${Number(entry.position || 0).toLocaleString('en-US')}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            ` : `
-                <div class="overall-stats-row"><span>No ranked season data available yet.</span></div>
-            `}
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
         `;
         panel.appendChild(rankedSection);
     }
 
-    const renderModeTable = (tableConfig, panelContainer, titleText = '') => {
+    function renderModeTable(tableConfig, panelContainer, titleText = '') {
         if (!tableConfig?.modes || tableConfig.modes.length === 0) return;
 
         if (titleText) {

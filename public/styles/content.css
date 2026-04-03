@@ -644,7 +644,7 @@ a.contact-value:hover {
 .overall-stats-row {
     display: flex;
     justify-content: space-between;
-    padding: 12px 15px;
+    padding: 10px 15px;
     border-bottom: 1px solid #edf1f7;
     font-size: 13px;
     color: var(--text-primary); /* Цвет цифр (справа) */
@@ -657,19 +657,22 @@ a.contact-value:hover {
     font-weight: 600;
 }
 
-/* Murder Mystery Секции */
+/* Секции (Arcade и Murder Mystery) */
 .overall-stats-section {
-    margin-bottom: 20px;
-    padding-bottom: 12px;
+    margin: 8px 0 4px;
+    padding: 0;
 }
 .section-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: #1f2937;
-    padding: 12px 15px 8px;
+    padding: 6px 15px 4px;
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 0.3px;
+}
+.section-title + .overall-stats-row {
+    padding-top: 8px;
 }
 
 /* СТИЛЬ ДЛЯ ТАБЛИЦ */
@@ -678,6 +681,20 @@ a.contact-value:hover {
     width: 100%;
     margin-top: 10px;
     -webkit-overflow-scrolling: touch;
+
+}
+
+.capture-the-wool-container .stats-table-wrapper {
+    margin-top: 4px;
+}
+
+.capture-the-wool-container .overall-stats-section {
+    margin: 0 0 2px;
+}
+
+.capture-the-wool-container .overall-stats-row {
+    padding: 8px 12px;
+}
     scrollbar-width: thin;
     scrollbar-color: #c9d2df transparent;
 }
@@ -710,8 +727,29 @@ a.contact-value:hover {
 
 .stats-table th, .stats-table td {
     padding: 12px 15px;
-    text-align: right;
+    text-align: center;
 }
+
+.stats-table th:first-child, .stats-table td:first-child {
+    text-align: left;
+}
+
+.capture-the-wool-container .stats-table {
+    table-layout: fixed;
+}
+
+.capture-the-wool-container .stats-table th:nth-child(1),
+.capture-the-wool-container .stats-table td:nth-child(1) {
+    width: 45%;
+}
+
+.capture-the-wool-container .stats-table th:nth-child(2),
+.capture-the-wool-container .stats-table td:nth-child(2),
+.capture-the-wool-container .stats-table th:nth-child(3),
+.capture-the-wool-container .stats-table td:nth-child(3) {
+    width: 27.5%;
+}
+
 
 .stats-table th:first-child, .stats-table td:first-child {
     text-align: left;

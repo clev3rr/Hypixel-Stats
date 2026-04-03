@@ -204,6 +204,7 @@
 
     <div id="comparatorPage" class="search-container hidden">
         <div class="search-box-card comparator-box-card">
+            <i class="fa-solid fa-right-left search-icon"></i>
             <h1>Player Comparator</h1>
             <p>Enter two player names to compare their stats</p>
             <div class="comparator-inputs">
@@ -260,6 +261,23 @@
             <div class="card changelog-card">
                 <h3><i class="fa-solid fa-clock-rotate-left"></i> Change Log</h3>
                 <p class="changelog-intro">This page tracks every update made to the site: what changed, why it matters, and when it was released.</p>
+
+                <article class="changelog-entry">
+                    <div class="changelog-entry-header">
+                        <h4>April 3, 2026 (23:45) — Capture the Wool + Comparator UI + Arcade improvements</h4>
+                    </div>
+
+                    <p>Today we completed major UI and stats alignment across the comparator and main stats pages, with special focus on Capture the Wool, SkyWars Ranked, Arcade modes and Build Battle.</p>
+
+                    <ul>
+                        <li>SkyWars Ranked section no longer shows empty placeholder text and appears only when real data is available.</li>
+                        <li>Capture the Wool now renders as a dedicated module with a complete mode stats table and additional summary metrics for wins/losses/draws and wools.</li>
+                        <li>Stability improvements in stats extraction and fallback handling ensure blank/missing values are handled gracefully.</li>
+                        <li>SkyWars and Capture layout were adjusted to prevent drifting table columns and keep consistent responsive appearance.</li>
+                        <li>Comparator layout was polished to match Player/Guild style, including icon header alignment and cleaner section spacing.</li>
+                        <li>Arcade/Build Battle support extended, with better mode grouping and consistency in reporting numeric totals.</li>
+                    </ul>
+                </article>
 
                 <article class="changelog-entry">
                     <div class="changelog-entry-header">
