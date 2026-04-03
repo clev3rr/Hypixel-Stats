@@ -245,7 +245,7 @@ body {
 
 :root[data-theme="dark"] .search-container,
 :root[data-theme="dark"] .results-wrapper {
-    background: #0f172a;
+    background: transparent;
 }
 
 :root[data-theme="dark"] .search-box-card,
@@ -290,6 +290,15 @@ body {
     background: #1f2937;
     border-color: #334155;
     color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .recent-searches {
+    background: rgba(15, 23, 42, 0.72);
+    border-color: #334155;
+}
+
+:root[data-theme="dark"] .recent-searches-title {
+    color: #94a3b8;
 }
 
 :root[data-theme="dark"] .recent-search-chip:hover {
@@ -391,14 +400,15 @@ body {
 }
 
 :root[data-theme="dark"] .back-button {
-    background: #1e293b;
-    color: #e2e8f0;
-    border: 1px solid #334155;
+    background: #101a2d;
+    color: #dbe7ff;
+    border: 1px solid #2f3b54;
 }
 
 :root[data-theme="dark"] .back-button:hover {
-    background: #273548;
-    color: #f8fafc;
+    background: #15233a;
+    color: #e9eeff;
+    border-color: #3a4a69;
 }
 
 .nav-link {

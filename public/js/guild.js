@@ -37,6 +37,10 @@ async function getGuildStats() {
 
     try {
         const data = await fetchApiJson(`/api/guild/${encodeURIComponent(query)}`, 'Guild not found');
+        const resolvedGuildName = String(data?.guild?.name || '').trim();
+        if (resolvedGuildName) {
+            addRecentGuildSearch(resolvedGuildName);
+        }
         displayGuildStats(data.guild, query);
     } catch (error) {
         guildError.innerText = error.message || 'Guild not found. Please try again.';
@@ -202,13 +206,14 @@ function displayGuildStats(guildData, sourceQuery = '') {
             const safeRank = escapeHtml(member.rank || 'Member');
             const avatar = member.avatar || `https://mc-heads.net/head/${encodeURIComponent(member.uuid || safeName)}/36`;
             const rankPrefixHtml = String(member.rankHtml || '').trim();
+            const rankPrefixClass = String(member.rankClass || '').trim();
             const nameColor = member.rankColor ? ` style="color: ${escapeHtml(member.rankColor)};"` : '';
             const prefixColor = member.rankColor ? ` style="color: ${escapeHtml(member.rankColor)};"` : '';
             const playerNameRaw = String(member.username || '').trim();
             const playerNameJson = JSON.stringify(playerNameRaw);
 
             const renderedName = rankPrefixHtml
-                ? `<div class="guild-member-name-cell"><span class="guild-member-rank-prefix"${prefixColor}>${rankPrefixHtml}</span> <span class="guild-member-username"${nameColor}>${safeName}</span></div>`
+                ? `<div class="guild-member-name-cell"><span class="guild-member-rank-prefix${rankPrefixClass ? ` ${escapeHtml(rankPrefixClass)}` : ''}"${prefixColor}>${rankPrefixHtml}</span> <span class="guild-member-username"${nameColor}>${safeName}</span></div>`
                 : `<div class="guild-member-name-cell"><span class="guild-member-username guild-member-username-muted">${safeName}</span></div>`;
 
             const clickableName = playerNameRaw

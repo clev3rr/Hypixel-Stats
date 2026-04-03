@@ -50,7 +50,12 @@
 }
 
 .recent-searches {
-    margin-top: 14px;
+    width: min(100%, 700px);
+    margin: 16px auto 0;
+    padding: 12px 14px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--card-bg) 92%, var(--surface-soft));
     text-align: left;
 }
 
@@ -58,7 +63,7 @@
     font-size: 12px;
     font-weight: 700;
     color: var(--text-secondary);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -66,16 +71,16 @@
 .recent-searches-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
 }
 
 .recent-search-chip {
     border: 1px solid var(--border-color);
-    background: #eef2f7;
+    background: color-mix(in srgb, var(--surface-soft) 72%, var(--card-bg));
     color: #526079;
     border-radius: 999px;
-    padding: 4px 6px 4px 10px;
-    font-size: 12px;
+    padding: 6px 8px 6px 12px;
+    font-size: 13px;
     font-weight: 700;
     line-height: 1;
     width: auto;
@@ -85,21 +90,20 @@
 }
 
 .recent-search-chip:hover {
-    background: #ffffff;
+    background: color-mix(in srgb, var(--card-bg) 90%, #ffffff);
     color: #526079;
     border-color: #d7e0ec;
 }
 
 .recent-search-chip-label {
-    background: transparent;
-    border: none;
     color: inherit;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
-    padding: 0;
     line-height: 1;
+    padding: 0;
     width: auto;
     cursor: pointer;
+    user-select: none;
 }
 
 .recent-search-chip-label:hover,
@@ -111,16 +115,20 @@
     outline: none;
 }
 
+.recent-search-chip-label:focus-visible {
+    outline: none;
+}
+
 .recent-search-chip-remove {
-    width: 18px;
-    min-width: 18px;
-    height: 18px;
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
     padding: 0;
     border-radius: 999px;
     border: 1px solid transparent;
     background: transparent;
     color: #6b7280;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     line-height: 1;
     cursor: pointer;

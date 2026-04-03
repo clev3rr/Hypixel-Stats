@@ -1052,6 +1052,7 @@ app.get('/api/guild/:name', async (req, res) => {
 
             let username = 'Unknown';
             let lastLogin = 0;
+            let networkRankClass = '';
             let networkRankHtml = '';
             let networkRankColor = null;
 
@@ -1067,6 +1068,7 @@ app.get('/api/guild/:name', async (req, res) => {
                         lastLogin = Number(playerData.lastLogin || playerData.lastLogout || 0) || 0;
 
                         const rankInfo = getRankInfo(playerData);
+                        networkRankClass = rankInfo?.class || '';
                         networkRankHtml = rankInfo?.html || '';
                         networkRankColor = rankInfo?.color || null;
                     }
@@ -1081,6 +1083,7 @@ app.get('/api/guild/:name', async (req, res) => {
                 rank: guildRank,
                 joined,
                 lastLogin,
+                rankClass: networkRankClass,
                 rankHtml: networkRankHtml,
                 rankColor: networkRankColor,
                 avatar: uuid ? `https://mc-heads.net/head/${uuid}/36` : null

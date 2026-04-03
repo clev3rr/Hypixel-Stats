@@ -23,7 +23,10 @@
     <header class="site-header">
         <div class="site-header-inner">
             <a href="#searchPage" onclick="goBack(); return false;" class="brand brand-link">
-                <div class="brand-icon">C</div>
+                <div class="brand-mark" aria-hidden="true">
+                    <span class="brand-mark-dot"></span>
+                    <span class="brand-mark-stem"></span>
+                </div>
                 <span class="brand-name">clev3r</span>
             </a>
             <nav class="site-nav">
@@ -190,6 +193,10 @@
             <div class="input-group">
                 <input type="text" id="guildInput" placeholder="Enter player name or guild name" onkeypress="if(event.key === 'Enter') getGuildStats()">
                 <button onclick="getGuildStats()">Search</button>
+            </div>
+            <div id="guildRecentSearches" class="recent-searches hidden">
+                <div class="recent-searches-title">Recent Searches</div>
+                <div id="guildRecentSearchesList" class="recent-searches-list"></div>
             </div>
             <div id="guildError" class="error hidden"></div>
         </div>
@@ -504,10 +511,13 @@
         <div class="site-footer-inner">
             <div class="footer-col footer-brand-col">
                 <div class="footer-brand">
-                    <div class="brand-icon">C</div>
+                    <div class="brand-mark" aria-hidden="true">
+                        <span class="brand-mark-dot"></span>
+                        <span class="brand-mark-stem"></span>
+                    </div>
                     <span>clev3r</span>
                 </div>
-                <p>Enhancing Minecraft gameplay with statistics tools.</p>
+                <p>Built for players who want clear, fast, and honest Hypixel stats.</p>
             </div>
 
             <div class="footer-col">

@@ -57,7 +57,9 @@ async function fetchApiJson(path, fallbackError) {
 
 const THEME_STORAGE_KEY = 'clev3r-theme';
 const RECENT_PLAYER_SEARCHES_KEY = 'clev3r-recent-player-searches';
+const RECENT_GUILD_SEARCHES_KEY = 'clev3r-recent-guild-searches';
 const MAX_RECENT_PLAYER_SEARCHES = 10;
+const MAX_RECENT_GUILD_SEARCHES = 10;
 
 function applyTheme(themeName) {
     const safeTheme = themeName === 'dark' ? 'dark' : 'light';
@@ -65,7 +67,7 @@ function applyTheme(themeName) {
 
     const toggleBtn = document.getElementById('themeToggle');
     if (toggleBtn) {
-        const iconClass = safeTheme === 'dark' ? 'fa-sun' : 'fa-moon';
+        const iconClass = safeTheme === 'dark' ? 'fa-moon' : 'fa-sun';
         const title = safeTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
         toggleBtn.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
         toggleBtn.setAttribute('title', title);
@@ -147,15 +149,24 @@ function renderRecentPlayerSearches() {
         const chip = document.createElement('div');
         chip.className = 'recent-search-chip';
 
-        const openButton = document.createElement('button');
-        openButton.type = 'button';
+        const openButton = document.createElement('span');
         openButton.className = 'recent-search-chip-label';
         openButton.textContent = name;
         openButton.title = `Search ${name}`;
+        openButton.setAttribute('role', 'button');
+        openButton.setAttribute('tabindex', '0');
         openButton.addEventListener('click', () => {
             const usernameInput = document.getElementById('usernameInput');
             if (usernameInput) usernameInput.value = name;
             getStats();
+        });
+        openButton.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                const usernameInput = document.getElementById('usernameInput');
+                if (usernameInput) usernameInput.value = name;
+                getStats();
+            }
         });
 
         const removeButton = document.createElement('button');
@@ -167,6 +178,101 @@ function renderRecentPlayerSearches() {
         removeButton.addEventListener('click', (event) => {
             event.stopPropagation();
             removeRecentPlayerSearch(name);
+        });
+
+        chip.appendChild(openButton);
+        chip.appendChild(removeButton);
+        list.appendChild(chip);
+    }
+
+    wrap.classList.remove('hidden');
+}
+
+function getRecentGuildSearches() {
+    try {
+        const raw = localStorage.getItem(RECENT_GUILD_SEARCHES_KEY);
+        const parsed = JSON.parse(raw || '[]');
+        if (!Array.isArray(parsed)) return [];
+        return parsed
+            .map(item => String(item || '').trim())
+            .filter(Boolean)
+            .slice(0, MAX_RECENT_GUILD_SEARCHES);
+    } catch {
+        return [];
+    }
+}
+
+function saveRecentGuildSearches(list) {
+    localStorage.setItem(RECENT_GUILD_SEARCHES_KEY, JSON.stringify(list.slice(0, MAX_RECENT_GUILD_SEARCHES)));
+}
+
+function addRecentGuildSearch(guildName) {
+    const cleanName = String(guildName || '').trim();
+    if (!cleanName) return;
+
+    const current = getRecentGuildSearches();
+    const deduped = current.filter(item => item.toLowerCase() !== cleanName.toLowerCase());
+    const next = [cleanName, ...deduped].slice(0, MAX_RECENT_GUILD_SEARCHES);
+    saveRecentGuildSearches(next);
+    renderRecentGuildSearches();
+}
+
+function removeRecentGuildSearch(guildName) {
+    const cleanName = String(guildName || '').trim();
+    if (!cleanName) return;
+
+    const current = getRecentGuildSearches();
+    const next = current.filter(item => item.toLowerCase() !== cleanName.toLowerCase());
+    saveRecentGuildSearches(next);
+    renderRecentGuildSearches();
+}
+
+function renderRecentGuildSearches() {
+    const wrap = document.getElementById('guildRecentSearches');
+    const list = document.getElementById('guildRecentSearchesList');
+    if (!wrap || !list) return;
+
+    const recent = getRecentGuildSearches();
+    list.innerHTML = '';
+
+    if (recent.length === 0) {
+        wrap.classList.add('hidden');
+        return;
+    }
+
+    for (const name of recent) {
+        const chip = document.createElement('div');
+        chip.className = 'recent-search-chip';
+
+        const openButton = document.createElement('span');
+        openButton.className = 'recent-search-chip-label';
+        openButton.textContent = name;
+        openButton.title = `Search guild ${name}`;
+        openButton.setAttribute('role', 'button');
+        openButton.setAttribute('tabindex', '0');
+        openButton.addEventListener('click', () => {
+            const guildInput = document.getElementById('guildInput');
+            if (guildInput) guildInput.value = name;
+            getGuildStats();
+        });
+        openButton.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                const guildInput = document.getElementById('guildInput');
+                if (guildInput) guildInput.value = name;
+                getGuildStats();
+            }
+        });
+
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'recent-search-chip-remove';
+        removeButton.innerText = '×';
+        removeButton.setAttribute('aria-label', `Remove ${name} from recent guild searches`);
+        removeButton.title = `Remove ${name}`;
+        removeButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            removeRecentGuildSearch(name);
         });
 
         chip.appendChild(openButton);

@@ -3,9 +3,11 @@ if (document.readyState === 'loading') {
         initTheme();
         setFooterYear();
         renderRecentPlayerSearches();
+        renderRecentGuildSearches();
     });
 } else {
     initTheme();
     setFooterYear();
     renderRecentPlayerSearches();
+    renderRecentGuildSearches();
 }

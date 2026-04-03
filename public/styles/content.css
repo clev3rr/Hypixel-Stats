@@ -600,6 +600,12 @@ a.contact-value:hover {
     transition: 0.2s;
 }
 
+.game-header > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
 .game-header:hover { background-color: #e2eaf2; color: var(--accent-red); }
 .game-header .arrow { transition: 0.3s; color: var(--text-secondary); }
 

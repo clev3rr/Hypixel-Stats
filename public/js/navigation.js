@@ -30,6 +30,15 @@ function setActiveSubnav(target) {
     setActiveTopNav('hypixel');
 }
 
+function clearActiveSubnav() {
+    const playerLink = document.getElementById('subnavPlayerStats');
+    const comparatorLink = document.getElementById('subnavComparator');
+    const guildLink = document.getElementById('subnavGuildStats');
+    if (playerLink) playerLink.classList.remove('subnav-link-active');
+    if (comparatorLink) comparatorLink.classList.remove('subnav-link-active');
+    if (guildLink) guildLink.classList.remove('subnav-link-active');
+}
+
 function hidePages(pages) {
     for (const id of pages) {
         const el = document.getElementById(id);
@@ -77,6 +86,7 @@ function goToChangeLog() {
         'privacyPolicyPage'
     ]);
     showPage('changeLogPage');
+    clearActiveSubnav();
     setActiveTopNav('changelog');
 }
 
@@ -93,6 +103,7 @@ function goToContactUs() {
         'privacyPolicyPage'
     ]);
     showPage('contactUsPage');
+    clearActiveSubnav();
     setActiveTopNav('contact');
 }
 
@@ -109,6 +120,7 @@ function goToFaq() {
         'privacyPolicyPage'
     ]);
     showPage('faqPage');
+    clearActiveSubnav();
     setActiveTopNav('faq');
 }
 
@@ -125,6 +137,7 @@ function goToPrivacyPolicy() {
         'faqPage'
     ]);
     showPage('privacyPolicyPage');
+    clearActiveSubnav();
     setActiveTopNav('legal');
 }
 
