@@ -147,6 +147,39 @@ async function comparePlayers() {
                 }
             }
 
+            if (gameKey === 'Duels') {
+                const duelMode = String(mode?.Mode || '').toLowerCase();
+                const duelAliasPrefixes = {
+                    'uhc tournament': ['uhc_tournament_', 'uhc_meetup_'],
+                    'skywars tournament': ['sw_tournament_', 'skywars_tournament_'],
+                    'sumo tournament': ['sumo_tournament_', 'sumo_tourney_'],
+                    'bridge 1v1': ['bridge_duel_', 'bridge_1v1_'],
+                    'bridge 2v2': ['bridge_doubles_', 'bridge_2v2_', 'bridge_double_'],
+                    'bridge 3v3': ['bridge_threes_', 'bridge_3v3_', 'bridge_three_'],
+                    'bridge 4v4': ['bridge_four_', 'bridge_4v4_'],
+                    'no debuff 1v1': ['no_debuff_duel_', 'potion_duel_', 'nodebuff_duel_'],
+                    'nodebuff 1x1': ['no_debuff_duel_', 'potion_duel_', 'nodebuff_duel_'],
+                    'nodebuff 1v1': ['no_debuff_duel_', 'potion_duel_', 'nodebuff_duel_']
+                };
+
+                const extraPrefixes = duelAliasPrefixes[duelMode] || [];
+                const allPrefixes = Array.from(new Set([prefix, ...extraPrefixes].filter(Boolean)));
+                const cleanAliasPrefix = (value) => String(value).replace(/_+$/g, '');
+
+                for (const alias of aliases) {
+                    for (const ap of allPrefixes) {
+                        const cleanAp = cleanAliasPrefix(ap);
+                        candidates.push(
+                            `${ap}${alias}`,
+                            `${alias}_${cleanAp}`,
+                            `${cleanAp}_${alias}`,
+                            `${alias}${cleanAp}`,
+                            `${cleanAp}${alias}`
+                        );
+                    }
+                }
+            }
+
             const found = getNumberFromStatKeys(gameStats, candidates.filter(Boolean));
             if (Number.isFinite(found)) return found;
 

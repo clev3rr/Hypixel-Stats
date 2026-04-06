@@ -283,7 +283,7 @@ const GAMES_CONFIG_DETAILED = {
             { Mode: 'Classic 1v1', apiPrefix: 'classic_duel_' },
             { Mode: 'OP 1v1', apiPrefix: 'op_duel_' },
             { Mode: 'OP 2v2', apiPrefix: 'op_doubles_' },
-            { Mode: 'No Debuff 1v1', apiPrefix: 'potion_duel_' },
+            { Mode: 'No Debuff 1v1', apiPrefix: 'no_debuff_duel_' },
             { Mode: 'Combo 1v1', apiPrefix: 'combo_duel_' },
             { Mode: 'Bow 1v1', apiPrefix: 'bow_duel_' },
             { Mode: 'Bow Spleef 1v1', apiPrefix: 'bowspleef_duel_' },
@@ -1254,6 +1254,64 @@ function generateDetailedTableAccordion(gameKey, config, stats, container, fullD
 
                 if (gameKey === 'Duels') {
                     const duelMode = String(mode.Mode || '').toLowerCase();
+                    const isNoDebuffMode = duelMode === 'no debuff 1v1' || duelMode === 'nodebuff 1x1' || duelMode === 'nodebuff 1v1';
+
+                    if (isNoDebuffMode) {
+                        const exactNoDebuffPrefixes = ['potion_duel_', 'no_debuff_duel_', 'nodebuff_duel_'];
+                        const fieldAliases = {
+                            kills: ['kills', 'kill'],
+                            deaths: ['deaths', 'death'],
+                            wins: ['wins', 'win'],
+                            losses: ['losses', 'loss']
+                        };
+
+                        const aliases = fieldAliases[f] || [f];
+                        const exactCandidates = [];
+                        for (const ap of exactNoDebuffPrefixes) {
+                            for (const alias of aliases) {
+                                exactCandidates.push(`${ap}${alias}`);
+                            }
+                        }
+
+                        for (const candidate of exactCandidates) {
+                            const lookup = candidate.toLowerCase();
+                            for (const [key, val] of Object.entries(stats)) {
+                                if (String(key).toLowerCase() !== lookup) continue;
+                                const parsed = Number(val);
+                                if (Number.isFinite(parsed) && parsed >= 0) return parsed;
+                            }
+                        }
+
+                        if (f === 'losses' || f === 'deaths') {
+                            let roundsPlayed = null;
+                            let wins = null;
+
+                            for (const ap of exactNoDebuffPrefixes) {
+                                const roundsKey = `${ap}rounds_played`.toLowerCase();
+                                const winsKey = `${ap}wins`.toLowerCase();
+
+                                for (const [key, val] of Object.entries(stats)) {
+                                    const keyLower = String(key).toLowerCase();
+                                    if (roundsPlayed === null && keyLower === roundsKey) {
+                                        const parsedRounds = Number(val);
+                                        if (Number.isFinite(parsedRounds) && parsedRounds >= 0) roundsPlayed = parsedRounds;
+                                    }
+                                    if (wins === null && keyLower === winsKey) {
+                                        const parsedWins = Number(val);
+                                        if (Number.isFinite(parsedWins) && parsedWins >= 0) wins = parsedWins;
+                                    }
+                                }
+                            }
+
+                            if (Number.isFinite(roundsPlayed) && Number.isFinite(wins)) {
+                                const derivedLosses = Math.max(0, Math.floor(roundsPlayed - wins));
+                                return derivedLosses;
+                            }
+                        }
+
+                        return 0;
+                    }
+
                     let altPrefixes = [];
 
                     if (duelMode === 'uhc tournament') {
@@ -1270,6 +1328,8 @@ function generateDetailedTableAccordion(gameKey, config, stats, container, fullD
                         altPrefixes = ['bridge_threes_', 'bridge_3v3_', 'bridge_three_'];
                     } else if (duelMode === 'bridge 4v4') {
                         altPrefixes = ['bridge_four_', 'bridge_4v4_'];
+                    } else if (duelMode === 'no debuff 1v1' || duelMode === 'nodebuff 1x1' || duelMode === 'nodebuff 1v1') {
+                        altPrefixes = ['no_debuff_duel_', 'potion_duel_', 'nodebuff_duel_'];
                     }
 
                     if (altPrefixes.length > 0) {
@@ -1308,15 +1368,24 @@ function generateDetailedTableAccordion(gameKey, config, stats, container, fullD
                                 .map(ap => ap.replace(/_+$/g, ''))
                                 .filter(Boolean)
                                 .map(normalize);
-                            const fieldAliases = trackedFields[f].map(normalize);
+                            const fieldAliases = trackedFields[f].map(alias => String(alias).toLowerCase());
+                            const noisyKeyPattern = /(streak|ratio|kdr|wlr|kd|wl|highest|best|record|current)/i;
+
+                            const tokenize = (text) => String(text)
+                                .toLowerCase()
+                                .split(/[^a-z0-9]+/g)
+                                .filter(Boolean);
 
                             let best = null;
                             for (const [key, val] of Object.entries(stats)) {
                                 const normalizedKey = normalize(key);
+                                if (noisyKeyPattern.test(String(key))) continue;
+
                                 const hasMode = modeAliases.some(alias => alias && normalizedKey.includes(alias));
                                 if (!hasMode) continue;
 
-                                const hasField = fieldAliases.some(alias => alias && normalizedKey.includes(alias));
+                                const keyTokens = tokenize(key);
+                                const hasField = fieldAliases.some(alias => keyTokens.includes(alias));
                                 if (!hasField) continue;
 
                                 const parsed = Number(val);
@@ -1992,7 +2061,22 @@ function generateDetailedTableAccordion(gameKey, config, stats, container, fullD
                 }
                 else if (fieldName === 'best_winstreak') {
                     const clean = prefix.endsWith('_') ? prefix.slice(0, -1) : prefix;
-                    const wsKeys = [prefix + 'winstreak', prefix + 'best_winstreak', `best_winstreak_mode_${clean}`, `win_streaks${suffix}`, 'best_winstreak', 'leaderboardPage_win_streak'];
+                    const duelMode = String(mode.Mode || '').toLowerCase();
+                    const isNoDebuffMode = duelMode === 'no debuff 1v1' || duelMode === 'nodebuff 1x1' || duelMode === 'nodebuff 1v1';
+                    const wsKeys = isNoDebuffMode
+                        ? [
+                            'potion_duel_winstreak',
+                            'potion_duel_best_winstreak',
+                            'no_debuff_duel_winstreak',
+                            'no_debuff_duel_best_winstreak',
+                            'nodebuff_duel_winstreak',
+                            'nodebuff_duel_best_winstreak',
+                            'best_no_debuff_winstreak',
+                            'best_winstreak_mode_potion_duel',
+                            'current_no_debuff_winstreak',
+                            'current_winstreak_mode_potion_duel'
+                        ]
+                        : [prefix + 'winstreak', prefix + 'best_winstreak', `best_winstreak_mode_${clean}`, `win_streaks${suffix}`, 'best_winstreak', 'leaderboardPage_win_streak'];
                     let maxWs = 0;
                     for (let vk of wsKeys) {
                         for (let sk in stats) {
