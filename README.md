@@ -1,47 +1,47 @@
 # Hypixel Stats
 
-Веб-приложение для просмотра статистики игроков и гильдий Hypixel с возможностью сравнения.
+A web application for viewing Hypixel player and guild statistics with a comparison feature.
 
-## Что внутри
+## Project structure
 
-- `server.js` — Express-сервер, отдаёт статику и API для запросов к Hypixel и Mojang
-- `package.json` — зависимости и команда запуска
-- `.env.example` — пример переменных окружения
-- `public/` — фронтенд-ресурсы
-  - `index.html` — главный HTML
-  - `style.css` — основной CSS
-  - `styles/` — дополнительные стили
-  - `js/` — клиентская логика
-    - `main.js` — инициализация интерфейса и общие вызовы
-    - `core.js` — утилиты и общие функции
-    - `navigation.js` — переключение страниц, меню
-    - `player.js` — поиск и отображение игрока
-    - `guild.js` — поиск и отображение гильдии
-    - `compare.js` — логика сравнения игроков
-    - `stats-render.js` — рендер статистики и графиков
+- `server.js` — Express server serving static files and proxying API requests to Hypixel and Mojang
+- `package.json` — npm dependencies and startup script
+- `.env.example` — example environment variables
+- `public/` — frontend assets
+  - `index.html` — main HTML page
+  - `style.css` — main stylesheet
+  - `styles/` — additional CSS files
+  - `js/` — frontend JavaScript modules
+    - `main.js` — initialization and global page setup
+    - `core.js` — shared utilities and helper functions
+    - `navigation.js` — page navigation and menu handling
+    - `player.js` — player lookup and display logic
+    - `guild.js` — guild lookup and display logic
+    - `compare.js` — player comparison logic
+    - `stats-render.js` — rendering of statistics sections
 
-## Технологии
+## Technology stack
 
 - Backend: `Node.js`, `Express`, `Axios`, `CORS`, `dotenv`
-- Frontend: Vanilla JS, HTML, CSS
-- Формат модулей: CommonJS
+- Frontend: Vanilla JavaScript, HTML, CSS
+- Module system: CommonJS
 
-## API-эндпойнты
+## API endpoints
 
-- `GET /api/stats/:username` — возвращает данные игрока по нику
-- `GET /api/guild/:name` — возвращает данные гильдии по имени или по нику игрока
+- `GET /api/stats/:username` — fetches player statistics by username
+- `GET /api/guild/:name` — fetches guild statistics by guild name or player name
 
-Сервер кеширует ответы в памяти (`API_CACHE_TTL_MS`), чтобы снизить количество запросов к Hypixel API.
+The server caches API responses in memory (`API_CACHE_TTL_MS`) to reduce calls to the Hypixel API.
 
-## Установка и запуск
+## Setup
 
-1. Установите зависимости:
+1. Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Скопируйте `.env.example` в `.env` и заполните ключ:
+2. Copy `.env.example` to `.env` and set your Hypixel API key:
 
 ```env
 HYPIXEL_API_KEY=your_hypixel_api_key_here
@@ -49,36 +49,20 @@ PORT=3000
 API_CACHE_TTL_MS=300000
 ```
 
-3. Запустите приложение:
+3. Start the server:
 
 ```bash
 npm start
 ```
 
-4. Откройте в браузере:
+4. Open the app in a browser:
 
 ```text
 http://localhost:3000
 ```
 
-## Рекомендации
+## Notes
 
-- Храните `HYPIXEL_API_KEY` только локально.
-- Не коммитьте `.env` в репозиторий.
-- Если ключ оказался в открытом доступе, немедленно замените его.
-
-## Если нужно улучшить
-
-- разделить `server.js` на модули для роутов и утилит
-- добавить unit-тесты
-- добавить rate limit и более строгие проверки входных данных
-- ввести CSP/безопасные заголовки
-- оформить фронтенд в более модульную структуру
-
-## Запуск
-
-- `npm start` — старт сервера
-
----
-
-Проект неофициальный и не связан с Hypixel. Используйте API-ключ ответственно.
+- Keep `HYPIXEL_API_KEY` private and do not commit `.env`.
+- This project is unofficial and not affiliated with Hypixel.
+- Use the API key responsibly.
