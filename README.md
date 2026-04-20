@@ -1,51 +1,47 @@
 # Hypixel Stats
 
-Web application for viewing Hypixel player and guild statistics, with player comparison and a modular frontend architecture.
+Веб-приложение для просмотра статистики игроков и гильдий Hypixel с возможностью сравнения.
 
-## Features
+## Что внутри
 
-- Player statistics lookup by username
-- Guild statistics lookup by guild name or player name
-- Side-by-side player comparator
-- Recent searches and theme persistence
-- FAQ, Contact, Change Log, and Privacy pages
-- API-compliance oriented setup (unofficial project disclaimer, key via environment variables, request caching)
+- `server.js` — Express-сервер, отдаёт статику и API для запросов к Hypixel и Mojang
+- `package.json` — зависимости и команда запуска
+- `.env.example` — пример переменных окружения
+- `public/` — фронтенд-ресурсы
+  - `index.html` — главный HTML
+  - `style.css` — основной CSS
+  - `styles/` — дополнительные стили
+  - `js/` — клиентская логика
+    - `main.js` — инициализация интерфейса и общие вызовы
+    - `core.js` — утилиты и общие функции
+    - `navigation.js` — переключение страниц, меню
+    - `player.js` — поиск и отображение игрока
+    - `guild.js` — поиск и отображение гильдии
+    - `compare.js` — логика сравнения игроков
+    - `stats-render.js` — рендер статистики и графиков
 
-## Tech Stack
+## Технологии
 
-- **Backend:** Node.js, Express, Axios, CORS, dotenv
-- **Frontend:** Vanilla JavaScript, HTML, CSS
-- **Runtime:** CommonJS
+- Backend: `Node.js`, `Express`, `Axios`, `CORS`, `dotenv`
+- Frontend: Vanilla JS, HTML, CSS
+- Формат модулей: CommonJS
 
-## Project Structure
+## API-эндпойнты
 
-```text
-.
-├─ server.js
-├─ package.json
-├─ .env.example
-├─ public/
-│  ├─ index.html
-│  ├─ style.css
-│  ├─ styles/
-│  └─ js/
-│     ├─ main.js
-│     ├─ core.js
-│     ├─ navigation.js
-│     ├─ player.js
-│     ├─ compare.js
-│     ├─ guild.js
-│     └─ stats-render.js
+- `GET /api/stats/:username` — возвращает данные игрока по нику
+- `GET /api/guild/:name` — возвращает данные гильдии по имени или по нику игрока
+
+Сервер кеширует ответы в памяти (`API_CACHE_TTL_MS`), чтобы снизить количество запросов к Hypixel API.
+
+## Установка и запуск
+
+1. Установите зависимости:
+
+```bash
+npm install
 ```
 
-## Prerequisites
-
-- Node.js 18+
-- A valid Hypixel API key from the Hypixel Developer Portal
-
-## Environment Variables
-
-Create a local `.env` file based on `.env.example`.
+2. Скопируйте `.env.example` в `.env` и заполните ключ:
 
 ```env
 HYPIXEL_API_KEY=your_hypixel_api_key_here
@@ -53,47 +49,36 @@ PORT=3000
 API_CACHE_TTL_MS=300000
 ```
 
-- `HYPIXEL_API_KEY`: required, your private Hypixel API key
-- `PORT`: optional, defaults to `3000`
-- `API_CACHE_TTL_MS`: optional, server-side cache TTL in milliseconds
-
-## Local Setup
-
-1. Install dependencies:
-
-```bash
-npm install
-```
-
-2. Create `.env` from `.env.example` and set your key.
-
-3. Start the server:
+3. Запустите приложение:
 
 ```bash
 npm start
 ```
 
-4. Open:
+4. Откройте в браузере:
 
-- http://localhost:3000
+```text
+http://localhost:3000
+```
 
-## API Usage Notes
+## Рекомендации
 
-- This project is **unofficial** and **not affiliated with or endorsed by Hypixel**.
-- Do not commit or share your real API key.
-- Avoid implementing continuous player session tracking/polling.
-- Respect Hypixel API policies and Terms of Service.
+- Храните `HYPIXEL_API_KEY` только локально.
+- Не коммитьте `.env` в репозиторий.
+- Если ключ оказался в открытом доступе, немедленно замените его.
 
-## Security / Secrets
+## Если нужно улучшить
 
-- `.env` must stay local and private.
-- `.env.example` is safe to share.
-- If a key is leaked, revoke/regenerate it in the Hypixel Developer Portal.
+- разделить `server.js` на модули для роутов и утилит
+- добавить unit-тесты
+- добавить rate limit и более строгие проверки входных данных
+- ввести CSP/безопасные заголовки
+- оформить фронтенд в более модульную структуру
 
-## Scripts
+## Запуск
 
-- `npm start` — run production-style local server
+- `npm start` — старт сервера
 
-## License
+---
 
-ISC (per `package.json`)
+Проект неофициальный и не связан с Hypixel. Используйте API-ключ ответственно.
